@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <title>Package Infomation</title>
+        <!--
+        <link rel="stylesheet" href="styles/style.css">
+        <link rel="stylesheet" href="styles/button.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
+        <script type="text/javascript" src="constants/jquery-3.4.1.min.js"></script>
+        <script type="text/javascript" src="constants/xlsx.full.min.js"></script>
+        <script type="text/javascript" src="constants/constants.js"></script>
+        <script type="text/javascript" src="./Bank Map.json"></script>
+        <script type="text/javascript" src="./Wafer Map.json"></script>
+        <script type="text/javascript" src="constants/constants.json"></script>
+        -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
+        <style>
+            body {
+                background-color: lightblue;
+            }
+            #project {
+                font-size: 2rem;
+                font-weight: bold;
+                display:inline-block;
+                background-color: #333;
+                -webkit-background-clip: text;
+                -moz-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                text-shadow: rgba(255,255,255,0.5) 2px 3px 6px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <center>
+        <div id="project"></div></br>
+        <div id='STA-101A' style='display:none;text-align:left'>
+            <ul style='font-weight:bold'>
+            <li>32-Channel CMOS Analog Switches</li>
+            <li>Consists of 8 cores which consist of 4 switches.</li>
+            <li>Up to 32 can be connected to digital Inteface.</li>
+            <li>3.3V Logic-compatible input(V<sub>IH</sub>=2.4V, V<sub>IL</sub>=0.8V)</li>
+            <li>Dual supply operation : 3.3V for digital, 5V for analog.</li>
+            <li>Analog signal frequency : DC-to-1Mhz</li>
+            <li>Low on-resistance : 0.6Ω(@typ)</li>
+            <li>Wide range analog input from 0V to 5V</li>
+            <li>Chip-ID programmable with OTP memory</li>
+            <li>Multi-channel switch control</li>
+            <li>Switching control using CMOS IF command</li>
+            <li>81-pin FBGA package</li>
+            <li>Switch Control Command</li>
+                <ul style='font-size:14px'>
+                <li>단일 명령으로 32개의 device를 동시에 제어할 수 있다.</li>
+                <li>Core 또는 channel단위로 Switch들을 제어할 수 있다.</li>
+                <li>The individual switch control logic can be rejected from all commands.</li>
+                <li></li>
+                </ul>
+            </ul>
+        </div>
+        <div id='tooltip' style='position:absolute; display:none;'></div>
+        <div id='svgContainer' name='container' align="center"></div>
+        </center>
+
+
+        <script type="text/javascript">
+            function getUrlParams() {
+                var params = {};
+                window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) { params[key] = value; });
+                return params;
+            }
+
+//            $(document).ready(function(){
+            $(function(){
+//                console.log(`Window position : (${window.screenX}, ${window.screenY}), size : ${window.innerWidth} x ${window.innerHeight}`);
+
+                var oParams = getUrlParams();
+                var deviceName;
+                console.log(`oParams = ${oParams}, ${JSON.stringify(oParams)}`);
+                if( jQuery.isEmptyObject(oParams) ) {       // URL parameter가 없는 경우.
+                    if( window.location.protocol === 'file:' ) {        // local html file open.
+                        deviceName = JSON.parse(localStorage.getItem('deviceName'));
+                    } else {                                            // web server url open.
+                        deviceName = (opener === null) ? 0 : opener.deviceName;
+                    }
+                } else {                                    // URL parameter
+                    deviceName = oParams.deviceName;
+                }
+                console.log('Device name : ', deviceName);
+
+                deviceName = 'STA-1.01A';
+                $('#project').text(`${deviceName} SPEC. Feature`);
+
+                deviceFeature(deviceName);
+
+                // 브라우저의 Window 크기에 맞추어서 svg영역을 재설정한다.
+                var w = $(window).width();
+                var h = $(window).height();
+//                console.log(`window size : (${w} x ${h})`);
+
+                $('#ProbeCard').width(w-30);
+                $('#ProbeCard').height(h-100);
+//                console.log(`inner size : ${$('#ProbeCard').innerWidth()} x ${$('#ProbeCard').innerHeight()}`);
+//                console.log(`rect width = ${$('#Card').width()}`);
+//                console.log('SelectedDut : ', SelectedDut);
+            });
+
+            // 브라우저 windows의 크기를 변경하면 Call된다.
+            $(window).resize( function() {
+                var w = $(window).width();
+                var h = $(window).height();
+
+                $("#ProbeCard").width(w-30);
+                $("#ProbeCard").height(h-100);
+
+//            console.log(`inner size : ${$('#ProbeCard').innerWidth()} x ${$('#ProbeCard').innerHeight()}`);
+            });
+
+            function deviceFeature(name) {
+                console.log(name);
+                if( name === 'STA-1.01A' ) {
+                    $('#STA-101A').css('display', 'block');
+                }
+            }
+        </script>
+    </body>
+</html>
+

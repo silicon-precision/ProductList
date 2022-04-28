@@ -1,0 +1,625 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <title>Package Infomation</title>
+        <link rel="stylesheet" href="styles/style.css">
+        <link rel="stylesheet" href="styles/button.css">
+        <!--
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
+        <script type="text/javascript" src="constants/jquery-3.4.1.min.js"></script>
+        <script type="text/javascript" src="constants/xlsx.full.min.js"></script>
+        <script type="text/javascript" src="constants/constants.js"></script>
+        <script type="text/javascript" src="./Bank Map.json"></script>
+        <script type="text/javascript" src="./Wafer Map.json"></script>
+        -->
+        <script type="text/javascript" src="constants/constants.json"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
+        <style>
+        </style>
+    </head>
+
+    <body>
+        <center>
+        <div id="project"></div>
+        <div id='tooltip' style='position:absolute; display:none;'></div>
+        <div id='svgContainer' name='container' align="center"></div>
+        </center>
+
+
+        <script type="text/javascript">
+            const xmlns = "http://www.w3.org/2000/svg";
+
+            var deviceName;
+
+            var maxChip = 8;
+            var svg;
+
+            function getUrlParams() {
+                var params = {};
+                window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) { params[key] = value; });
+                return params;
+            }
+
+//            $(document).ready(function(){
+            $(function(){
+//                console.log(`Window position : (${window.screenX}, ${window.screenY}), size : ${window.innerWidth} x ${window.innerHeight}`);
+
+                var oParams = getUrlParams();
+                console.log(`oParams = ${oParams}, ${JSON.stringify(oParams)}`);
+                if( jQuery.isEmptyObject(oParams) ) {       // URL parameter가 없는 경우.
+                    if( window.location.protocol === 'file:' ) {        // local html file open.
+                        deviceName = JSON.parse(localStorage.getItem('deviceName'));
+                    } else {                                            // web server url open.
+                        deviceName = (opener === null) ? 0 : opener.deviceName;
+                    }
+                } else {                                    // URL parameter
+                    deviceName = oParams.deviceName;
+                }
+                console.log('Device Name : ', deviceName);
+
+                deviceName = 'MCC16';
+                $('#project').text(`${deviceName} Package Infomation`);
+
+                createWindow();
+
+                // 브라우저의 Window 크기에 맞추어서 svg영역을 재설정한다.
+                var w = $(window).width();
+                var h = $(window).height();
+//                console.log(`window size : (${w} x ${h})`);
+
+                $('#ProbeCard').width(w-30);
+                $('#ProbeCard').height(h-100);
+//                console.log(`inner size : ${$('#ProbeCard').innerWidth()} x ${$('#ProbeCard').innerHeight()}`);
+//                console.log(`rect width = ${$('#Card').width()}`);
+//                console.log('SelectedDut : ', SelectedDut);
+            });
+
+            // 브라우저 windows의 크기를 변경하면 Call된다.
+            $(window).resize( function() {
+                var w = $(window).width();
+                var h = $(window).height();
+
+                $("#ProbeCard").width(w-30);
+                $("#ProbeCard").height(h-100);
+
+//            console.log(`inner size : ${$('#ProbeCard').innerWidth()} x ${$('#ProbeCard').innerHeight()}`);
+            });
+
+            function createWindow() {
+                var svgWidth = 800;
+                var svgHeight = 700;
+
+                document.getElementById('svgContainer').innerHTML = ""; // 기존에 생성된 Wafer Map을 제거한다.
+
+                svg = document.createElementNS(xmlns, 'svg');
+
+                // 화살표 marker 등록.
+                var defs = document.createElementNS(xmlns, "defs");
+                var marker = document.createElementNS(xmlns, "marker");
+                $(marker).attr({
+                    id:'Arrow_start', markerWidth:5, markerHeight:5, refX:1, refY:4, orient:'auto', viewBox:'0 0 8 8'
+                });
+                var path = document.createElementNS(xmlns, "path");
+                $(path).attr({ d:'M 0 4 L 9 0 L 9 8 z' });
+                marker.appendChild(path);
+                defs.appendChild(marker);
+
+                var marker = document.createElementNS(xmlns, "marker");
+                $(marker).attr({
+                    id:'Arrow_end', markerWidth:5, markerHeight:5, refX:1, refY:4, orient:'auto', viewBox:'0 0 8 8'
+                });
+                var path = document.createElementNS(xmlns, "path");
+                $(path).attr({ d:'M 0 0 L 9 4 L 0 8 z' });
+                marker.appendChild(path);
+                defs.appendChild(marker);
+                svg.appendChild(defs);
+
+
+
+                if( deviceName == 'STA-XF' ) {
+                    // FBGA 10 x 10 mm, 225 Ball 0.65mm Ball Pitch/MAX. 1.25MM Package Outline.
+                } else if( deviceName == 'STA-101A' ) {
+                    // 81-pin FBGA package.
+
+                    drawPackage(0, x, y, pin, type);
+                } else if( deviceName == 'MCC16' ) {            // MCC16
+                    // 49-pin WLCSP package.
+                    // drawing svg
+                    var svgWidth = 800;
+                    var svgHeight = 700;
+                    $(svg).attr({
+                        id:'ApplicationBoard', align:'center', width:'100%', height:'100%',
+                        viewBox:`0 0 ${svgWidth} ${svgHeight}`
+                    });
+//                console.log(svg);
+
+
+                    $(document.createElementNS(xmlns, 'rect')).attr({
+                        x:0, y:0, width:svgWidth, height:svgHeight,
+                        fill:'transparent', stroke:'gray', 'stroke-width':'1', 'fill-opacity':0.5,
+                    }).appendTo(svg);
+
+                    var sx = 80;
+                    var sy = 80;
+
+                    var x, y, w, h, dw, dh;
+
+                    dw = 40;
+                    dh = 40;
+                    x = sx;
+                    y = sy;
+
+                    drawPackage(0, x, y, 49, 'WLCSP');     // top view.
+                    x = sx + 300;
+                    drawPackage(1, x, y, 49, 'WLCSP');     // top view.
+                    x = sx + 600;
+                    drawPackage(2, x, y, 49, 'WLCSP');     // top view.
+
+
+                    x = sx-50;
+                    y = sy + 300;
+                    drawDimension(x, y);
+
+                    x = sx + 260;
+                    y = sy + 400;
+                    $(document.createElementNS(xmlns, 'text')).attr({
+                        x:x, y:y-25, class:'rightAlign', 'font-weight':'bold', 'font-size':24
+                    }).text('Remark').appendTo(svg);
+                    $(document.createElementNS(xmlns, "path")).attr({
+                        d:`M ${x} ${y-20} h 90`, stroke:'black', 'stroke-width':1, fill:'transparent'
+                    }).appendTo(svg);
+                    var txt = document.createElementNS(xmlns, "text");
+                    $(txt).attr({ x:x, y:y, 'font-size':18, class:'rightAlign', 'font-weight':'bold', fill:'black' });
+                    $(document.createElementNS(xmlns, "tspan")).attr({ x:x, y:y }).text('. POD designed base on die size with sealing size').appendTo(txt);
+                    $(document.createElementNS(xmlns, "tspan")).attr({ x:x, y:y+20 }).text('. Die stepping pitch : 6.310mm x 6.130mm').appendTo(txt);
+                    $(document.createElementNS(xmlns, "tspan")).attr({ x:x, y:y+40 }).text('. Sawing street width : 0.270mm x 0.090mm').appendTo(txt);
+                    $(txt).appendTo(svg);
+                } else {            // 
+                }
+
+                document.getElementById("svgContainer").appendChild(svg);
+            }
+
+    const Dimension = [
+        {
+            'device':'STA-101A',
+            'PackageType':'FBGA',
+            'BollCntWidth':9,
+            'BollCntHeight':9,
+            'PackageWidth':(12.00*20),       // D
+            'PackageHeight':(12.00*20),      // E
+            'OutsideWidth':(0.80*20),        // I
+            'OutsideHeight':(0.80*20),       // J
+            'PackageThickness':(1.26*20),    // A = A1 + A2
+            'BumpHeight':(0.30*20),          // A1
+            'DieThickness':(0.96*20),        // A2
+            'BumpPitch':(1.30*20),           // e
+            'BumpDiameter':(0.40*20),        // b
+            'RDLThickness':(0.26*20),        // c
+        },
+        {
+            'device':'MCC16',
+            'PackageType':'WLCSP',
+            'BollCntWidth':7,
+            'BollCntHeight':7,
+            'PackageWidth':(6.28*30),       // D
+            'PackageHeight':(6.10*30),      // E
+            'OutsideWidth':(0.74*30),        // I
+            'OutsideHeight':(0.65*30),       // J
+            'PackageThickness':(0.65*30),    // A = A1 + A2
+            'DieThickness':(0.42*30),          // A1
+            'BumpHeight':(0.205*30),       // A2
+            'BumpPitch':(0.80*30),           // e
+            'BumpDiameter':(0.37*30),        // b(w)    bump 지름.
+            'RDLThickness':(0.025*30),        // c
+        },
+        ];
+            function drawDimension(sx, sy) {
+                var x = sx;
+                var y = sy;
+                var h = 20;
+                var w = 50;
+
+                const dimensionStr = [
+                    ["", "", "DIMENSION", "", ""],
+                    ["Symbols", "MIN", "NOM", "MAX", "NOTE"],
+                    ["A", "0.606", "0.650", "0.694", "±0.044"],
+                    ["A1", "0.400", "0.420", "0.440", "±0.020"],
+                    ["A2", "0.184", "0.205", "0.226", "±0.021"],
+                    ["D", "", "6.280", "", "±0.030"],
+                    ["E", "", "6.100", "", "±0.030"],
+                    ["D1", "", "0.800", "", ""],
+                    ["E1", "", "0.800", "", ""],
+                    ["F1", "", "0.740", "", ""],
+                    ["F2", "", "0.650", "", ""],
+                    ["F3", "", "0.740", "", ""],
+                    ["F4", "", "0.650", "", ""],
+                    ["g", "0.022", "0.025", "0.028", "±0.003"],
+                    ["w", "0.333", "0.370", "0.407", "±0.037"]
+                ]
+                console.log(`dimensionStr length = ${dimensionStr.length}`);
+                console.log(`dimensionStr[0] length = ${dimensionStr[0].length}`);
+                var nRow = dimensionStr.length;
+                var nCol = dimensionStr[0].length;
+
+                $(document.createElementNS(xmlns, "rect")).attr({
+                    x:x, y:y, width:(w*5), height:15*h, fill:"transparent", stroke:'blue', "stroke-width":2
+                }).appendTo(svg);
+
+                for(var row=0; row<(nRow-1); row++) {
+                    $(document.createElementNS(xmlns, "path")).attr({
+                        d:`M ${x} ${y+h} h ${w*5}`, stroke:'black', 'stroke-width':(row==0)?2:1, fill:'transparent'
+                    }).appendTo(svg);
+                    y += h;
+                }
+                y = sy + h;
+                x = sx + w;
+                for(var col=0; col<(nCol-1); col++) {
+                    if( (col == 0) || (col == 3) ) {
+                        $(document.createElementNS(xmlns, "path")).attr({
+                            d:`M ${x} ${y} v ${h*14}`, stroke:'black', 'stroke-width':(col==0)?2:1, fill:'transparent'
+                        }).appendTo(svg);
+                    } else if( (col == 1) || (col == 2) ) {
+                        $(document.createElementNS(xmlns, "path")).attr({
+                            d:`M ${x} ${y} v ${h*4} m 0 ${h*8} v ${h*2}`, stroke:'black', 'stroke-width':1, fill:'transparent'
+                        }).appendTo(svg);
+                    }
+                    x += w;
+                }
+                $(document.createElementNS(xmlns, 'text')).attr({
+                    x:sx, y:sy-6, class:'rightAlign', 'font-weight':'bold', 'font-size':10
+                }).text('Unit : mm').appendTo(svg);
+
+                x = sx;
+                y = sy + 10;
+                dimensionStr.forEach(function(line) {
+                    x = sx;
+                    var txt = document.createElementNS(xmlns, "text");
+                    $(txt).attr({ x:x, y:y, 'font-size':10, class:'centerAlign', fill:'black' });
+                    line.forEach(function(entry, idx) {
+                        $(document.createElementNS(xmlns, "tspan")).attr({ x:x+25, y:y }).text(entry).appendTo(txt);
+                        x += w;
+                    });
+                    $(txt).appendTo(svg);
+                    y += h;
+                });
+            }
+
+            function drawPackage(view, sx, sy, cnt, type) {
+                var package;// = Dimension[0];
+                var pin;
+                var row, col;
+
+                var x = sx;
+                var y = sy;
+
+                Dimension.forEach(function(device) {
+                    console.log(`device name = ${device.device}`);
+                    if( device.device === deviceName ) {
+                        package = device;
+                    }
+                });
+                console.log(Dimension);
+                console.log(package);
+
+                var nRow = package.BollCntHeight;
+                var nCol = package.BollCntWidth;
+                var F1 = package.OutsideWidth;
+                var D1 = package.BumpPitch;
+                var F2 = package.OutsideHeight;
+                var E1 = package.BumpPitch;
+                if( (view == 0) || (view == 1) ) {           // Top view.
+                    $(document.createElementNS(xmlns, 'text')).attr({
+                        x:sx+(package.PackageWidth/2), y:sy-50, class:'centerAlign', 'font-size':15
+                    }).text((view==0)?'Top View(Bump side down)':'Bottom View(Bump side up)').appendTo(svg);
+                    for(var row=0; row<nRow; row++) {
+                        var bollname1 = String.fromCharCode(65+row);       // A, B, C, D, ...
+                        y += parseInt((row == 0) ? F2 : E1);
+                        for(var col=0; col<nCol; col++) {
+                            x += (col == 0) ? F1 : D1;
+//                console.log(`row = ${row}, col = ${col}, x = ${x}, y = ${y}`);
+
+                            // boll width name : 1, 2, 3, 4, ...
+                            var bollname2 = (view == 0) ? String(col+1) : String(package.BollCntWidth-col);
+                            $(document.createElementNS(xmlns, 'text')).attr({
+                                x:x, y:sy-20, class:'centerAlign', 'font-size':12
+                            }).text(bollname2).appendTo(svg);
+
+                /*
+                            // boll name : A1, A2, ... B1, B2, ... C1, C2, ...
+                            $(document.createElementNS(xmlns, 'text')).attr({
+                                x:x, y:y+2, class:'centerAlign', 'font-size':10
+                            }).text(`${bollname1}${bollname2}`).appendTo(svg);
+                */
+//                            var dash = (view == 0) 2 : 0;
+                            $(document.createElementNS(xmlns, 'circle')).attr({
+                                cx:x, cy:y, r:(package.BumpDiameter / 2),
+                                stroke:'black', "stroke-dasharray":(view == 0)?2:0, fill:'transparent'
+                            }).appendTo(svg);
+
+                            if( col == (parseInt(package.BollCntWidth) - 1) ) {
+                                $(document.createElementNS(xmlns, 'text')).attr({
+                                    x:x+40, y:y, class:'centerAlign', 'font-size':12
+                                }).text(bollname1).appendTo(svg);
+                            }
+                        }
+                        x = sx;
+                    }
+
+                    $(document.createElementNS(xmlns, 'rect')).attr({
+                        x:sx, y:sy, width:package.PackageWidth, height:package.PackageHeight,
+                        fill:'transparent', stroke:'black', 'stroke-width':1
+                    }).appendTo(svg);
+
+
+                    if( view == 0 ) {
+                        // direct : 0(left), 1(bottom), 2(right), 3(top)
+                        dimensionUnit('D', sx, sy, 0, package.PackageHeight, 60);
+                        dimensionUnit('E', sx, sy+package.PackageHeight, 1, package.PackageWidth, 60);
+                        dimensionUnit('F3', sx, sy+package.PackageHeight-package.OutsideHeight, 1, package.OutsideWidth, 50);
+                        dimensionUnit('F4', sx+package.OutsideWidth, sy+package.PackageHeight-package.OutsideHeight, 0, package.OutsideHeight, 50);
+                        dimensionUnit('F2', sx+package.OutsideWidth, sy, 0, package.OutsideHeight, 50);
+                        dimensionUnit('F1', sx, sy+package.OutsideHeight, 3, package.OutsideWidth, 50);
+                    } else {
+                        dimensionUnit('E1', sx+package.OutsideWidth, sy+package.OutsideHeight, 0, package.OutsideWidth, 50);
+                        dimensionUnit('D1', sx+package.OutsideWidth+(package.BumpPitch *2), sy+package.PackageHeight-package.OutsideHeight, 1, package.BumpPitch, 50);
+                    }
+                } else if( view == 2 ) {    // Side view.
+                    $(document.createElementNS(xmlns, 'text')).attr({
+                        x:sx, y:sy-50, class:'centerAlign', 'font-size':15
+                    }).text('Side View').appendTo(svg);
+                    $(document.createElementNS(xmlns, 'rect')).attr({
+                        x:sx, y:sy, width:package.DieThickness, height:package.PackageHeight,
+                        fill:'transparent', stroke:'black', 'stroke-width':1
+                    }).appendTo(svg);
+                    $(document.createElementNS(xmlns, 'path')).attr({
+                        d:`M ${sx+1} ${sy} v ${package.PackageHeight}`,
+                        stroke:'black', 'stroke-width':1,
+                    }).appendTo(svg);
+
+                    x = sx+package.DieThickness;//g+a1;
+                    for(var col=0; col<7; col++) {
+                        y = sy + package.OutsideHeight - (package.BumpDiameter/2) + (col * package.BumpPitch);
+                        $(document.createElementNS(xmlns, 'path')).attr({
+                d:`M ${x} ${y} c ${package.BumpHeight+2} 0, ${package.BumpHeight+2} ${package.BumpDiameter}, 0 ${package.BumpDiameter}`,
+                            stroke:'black', 'stroke-width':1, fill:'transparent'
+                        }).appendTo(svg);
+                    }
+
+                    dimensionUnit('A', sx, sy+package.PackageHeight, 1, package.PackageThickness, 50);
+                    dimensionUnit('A1', sx, sy+package.PackageHeight, 1, package.DieThickness, 30);
+                    dimensionUnit('A2', sx+package.DieThickness, sy+package.OutsideHeight, 3, package.BumpHeight, 50);
+                    dimensionUnit('w', sx+package.DieThickness, sy+package.OutsideHeight+(package.BumpPitch*2)-(package.BumpDiameter/2), 2, package.BumpDiameter, 40);
+                }
+            }
+
+                function dimensionUnit(symbol, sx, sy, direct, length, sideline) {
+                console.log(`sx = ${sx}, sy = ${sy}, length = ${length}`);
+                    // package width & height.
+                    if( direct == 0 ) {         // left
+                        $(document.createElementNS(xmlns, "path")).attr({
+                            d:`M ${sx} ${sy} h ${-sideline} m 0 ${length} h ${sideline}`,
+                            stroke:'blue', 'stroke-width':1, fill:'transparent'
+                        }).appendTo(svg);
+                        if( length < 16 ) {
+                            $(document.createElementNS(xmlns, 'path')).attr({
+                                d:`M ${sx-(sideline-10)} ${sy} v -10 m 0 ${length+20} v -5`,
+                                stroke:'blue', 'stroke-width':1, fill:'transparent',
+                                'marker-start':'url(#Arrow_start)',
+                                'marker-end':'url(#Arrow_end)'
+                            }).appendTo(svg);
+                            $(document.createElementNS(xmlns, 'text')).attr({
+                                x:sx, y:sy+(length/2)+2, class:'centerAlign', fill:'blue', 'font-size':12
+                            }).text(symbol).appendTo(svg);
+                        } else {
+                            if( length < 60 ) {
+                                $(document.createElementNS(xmlns, 'path')).attr({
+                                    d:`M ${sx-(sideline-10)} ${sy} v -10 m 0 ${length+20} v -5`,
+                                    stroke:'blue', 'stroke-width':1, fill:'transparent',
+                                    'marker-start':'url(#Arrow_start)',
+                                    'marker-end':'url(#Arrow_end)'
+                                }).appendTo(svg);
+                            } else {
+                                $(document.createElementNS(xmlns, 'path')).attr({
+                                    d:`M ${sx-(sideline-10)} ${sy} v ${(length/2)-10} m 0 20 v ${(length/2)-10-5}`,
+                                    stroke:'blue', 'stroke-width':1, fill:'transparent',
+                                    'marker-start':'url(#Arrow_start)',
+                                    'marker-end':'url(#Arrow_end)'
+                                }).appendTo(svg);
+                            }
+                            $(document.createElementNS(xmlns, 'text')).attr({
+                                x:sx-(sideline-10), y:sy+(length/2)+2, class:'centerAlign', fill:'blue', 'font-size':12
+                            }).text(symbol).appendTo(svg);
+                        }
+                    } else if( direct == 1 ) {  // bottom
+                        $(document.createElementNS(xmlns, "path")).attr({
+                            d:`M ${sx} ${sy} v ${sideline} m ${length} 0 v ${-sideline}`,
+                            stroke:'blue', 'stroke-width':1, fill:'transparent'
+                        }).appendTo(svg);
+                        if( length < 16 ) {
+                            $(document.createElementNS(xmlns, 'path')).attr({
+                                d:`M ${sx} ${sy+(sideline-10)} h -20 m ${length+30} 0 h -5`,
+                                stroke:'blue', 'stroke-width':1, fill:'transparent',
+                                'marker-start':'url(#Arrow_start)',
+                                'marker-end':'url(#Arrow_end)'
+                            }).appendTo(svg);
+                            $(document.createElementNS(xmlns, 'text')).attr({
+                                x:sx-30, y:sy+(sideline-10), class:'centerAlign', fill:'blue', 'font-size':12
+                            }).text(symbol).appendTo(svg);
+                        } else {
+                            if( length < 60 ) {
+                                $(document.createElementNS(xmlns, 'path')).attr({
+                                    d:`M ${sx} ${sy+(sideline-10)} h -10 m ${length+20} 0 h -5`,
+                                    stroke:'blue', 'stroke-width':1, fill:'transparent',
+                                    'marker-start':'url(#Arrow_start)',
+                                    'marker-end':'url(#Arrow_end)'
+                                }).appendTo(svg);
+                            } else {
+                                $(document.createElementNS(xmlns, 'path')).attr({
+                                    d:`M ${sx} ${sy+(sideline-10)} h ${(length/2)-10} m 20 0 h ${(length/2)-10-5}`,
+                                    stroke:'blue', 'stroke-width':1, fill:'transparent',
+                                    'marker-start':'url(#Arrow_start)',
+                                    'marker-end':'url(#Arrow_end)'
+                                }).appendTo(svg);
+                            }
+                            $(document.createElementNS(xmlns, 'text')).attr({
+                                x:sx+(length/2), y:sy+(sideline-10), class:'centerAlign', fill:'blue', 'font-size':12
+                            }).text(symbol).appendTo(svg);
+                        }
+                    } else if( direct == 2 ) {  // right
+                        $(document.createElementNS(xmlns, "path")).attr({
+                            d:`M ${sx} ${sy} h ${sideline} m 0 ${length} h ${-sideline}`,
+                            stroke:'blue', 'stroke-width':1, fill:'transparent'
+                        }).appendTo(svg);
+                        if( length < 16 ) {
+                            $(document.createElementNS(xmlns, 'path')).attr({
+                                d:`M ${sx+(sideline-10)} ${sy} v -10 m 0 ${length+20} v -5`,
+                                stroke:'blue', 'stroke-width':1, fill:'transparent',
+                                'marker-start':'url(#Arrow_start)',
+                                'marker-end':'url(#Arrow_end)'
+                            }).appendTo(svg);
+                            $(document.createElementNS(xmlns, 'text')).attr({
+                                x:sx+(sideline-10), y:sy+(length/2), class:'centerAlign', fill:'blue', 'font-size':12
+                            }).text(symbol).appendTo(svg);
+                        } else {
+                            if( length < 60 ) {
+                                $(document.createElementNS(xmlns, 'path')).attr({
+                                    d:`M ${sx-(sideline-10)} ${sy} v -10 m 0 ${length+20} v -5`,
+                                    stroke:'blue', 'stroke-width':1, fill:'transparent',
+                                    'marker-start':'url(#Arrow_start)',
+                                    'marker-end':'url(#Arrow_end)'
+                                }).appendTo(svg);
+                            } else {
+                                $(document.createElementNS(xmlns, 'path')).attr({
+                                    d:`M ${sx-(sideline-10)} ${sy} v ${(length/2)-10} m 0 20 v ${(length/2)-10-5}`,
+                                    stroke:'blue', 'stroke-width':1, fill:'transparent',
+                                    'marker-start':'url(#Arrow_start)',
+                                    'marker-end':'url(#Arrow_end)'
+                                }).appendTo(svg);
+                            }
+                            $(document.createElementNS(xmlns, 'text')).attr({
+                                x:sx-(sideline-10), y:sy+(length/2)+2, class:'centerAlign', fill:'blue', 'font-size':12
+                            }).text(symbol).appendTo(svg);
+                        }
+                    } else if( direct == 3 ) {  // top
+                        $(document.createElementNS(xmlns, "path")).attr({
+                            d:`M ${sx} ${sy} v ${-sideline} m ${length} 0 v ${sideline}`,
+                            stroke:'blue', 'stroke-width':1, fill:'transparent'
+                        }).appendTo(svg);
+                        if( length < 16 ) {
+                            $(document.createElementNS(xmlns, 'path')).attr({
+                                d:`M ${sx} ${sy-(sideline-20)} h -10 m ${length+30} 0 h -15`,
+                                stroke:'blue', 'stroke-width':1, fill:'transparent',
+                                'marker-start':'url(#Arrow_start)',
+                                'marker-end':'url(#Arrow_end)'
+                            }).appendTo(svg);
+                            $(document.createElementNS(xmlns, 'text')).attr({
+                                x:sx+(length+30), y:sy-(sideline-20), class:'centerAlign', fill:'blue', 'font-size':12
+                            }).text(symbol).appendTo(svg);
+                        } else {
+                            if( length < 60 ) {
+                                $(document.createElementNS(xmlns, 'path')).attr({
+                                    d:`M ${sx} ${sy-(sideline-20)} h -10 m ${length+20} 0 h -5`,
+                                    stroke:'blue', 'stroke-width':1, fill:'transparent',
+                                    'marker-start':'url(#Arrow_start)',
+                                    'marker-end':'url(#Arrow_end)'
+                                }).appendTo(svg);
+                            } else {
+                                $(document.createElementNS(xmlns, 'path')).attr({
+                                    d:`M ${sx} ${sy+(sideline-10)} h ${(length/2)-10} m 20 0 h ${(length/2)-10-5}`,
+                                    stroke:'blue', 'stroke-width':1, fill:'transparent',
+                                    'marker-start':'url(#Arrow_start)',
+                                    'marker-end':'url(#Arrow_end)'
+                                }).appendTo(svg);
+                            }
+                            $(document.createElementNS(xmlns, 'text')).attr({
+                                x:sx+(length/2), y:sy-(sideline-20), class:'centerAlign', fill:'blue', 'font-size':12
+                            }).text(symbol).appendTo(svg);
+                        }
+                    }
+                }
+
+            function drawSTA(id, sx, sy, sw, sh) {
+
+                var x = sx + 10;
+                var y = sy + 10;
+                var w = 20;
+                var h = 10;
+                for(var channel=0; channel<8; channel++) {
+                    x = sx + 10;
+
+                    $(document.createElementNS(xmlns, 'text')).attr({
+                        x:x-32, y:y+(h/2)+1, class:'centerAlign', 'font-size':8, fill:'blue'
+                    }).text(`Channel[${channel}]`).appendTo(svg);
+                    $(document.createElementNS(xmlns, 'rect')).attr({
+                        x:sx, y:y-2, width:sw, height:14, rx:3, ry:3, stroke:'blue', fill:'transparent'
+                    }).appendTo(svg);
+
+                    for(var core=0; core<8; core++) {
+                        if( channel == 0 ) {
+                            $(document.createElementNS(xmlns, 'text')).attr({
+                                x:x+(w/2), y:y-10, class:'centerAlign', 'font-size':8, fill:'green'
+                            }).text(`Core[${core}]`).appendTo(svg);
+                            $(document.createElementNS(xmlns, 'rect')).attr({
+                                x:x-2, y:y-5, width:24, height:sh, rx:3, ry:3, stroke:'green', fill:'transparent'
+                            }).appendTo(svg);
+                        }
+
+                        $(document.createElementNS(xmlns, 'text')).attr({
+                            x:x+(w/2), y:y+(h/2)+1, class:'centerAlign', 'font-size':8
+                        }).text(`${(id * 64) + (core * 8) + channel}`).appendTo(svg);
+                        $(document.createElementNS(xmlns, 'rect')).attr({
+                            x:x, y:y, width:20, height:10, rx:3, ry:3, stroke:'black', fill:'transparent'
+                        }).appendTo(svg);
+                        x = x + 40;
+                    }
+                    y = y + 20;
+                }
+                console.log(`x = ${x}, y = ${y}`);
+
+                $(document.createElementNS(xmlns, 'rect')).attr({
+                    x:sx-5, y:sy-5, width:sw+10, height:sh+10,
+                    fill:'transparent', stroke:'gray', 'stroke-width':'0.5'
+                }).appendTo(svg);
+            }
+
+            function drawSP2003(n, sx, sy, w, h) {
+
+                var x = sx + 10;
+                var y = sy + 10;
+                for(var i=0; i<6; i++) {
+                    $(document.createElementNS(xmlns, 'rect')).attr({
+                        x:x, y:y, rx:3, ry:3, width:20, height:5,
+                        fill:'transparent', stroke:'black', 'stroke-width':'1'
+                    }).appendTo(svg);
+                    y = y + ((i==2) ? 20 : 10);
+                }
+
+                $(document.createElementNS(xmlns, 'text')).attr({
+                    x:sx+(w/2), y:sy-(5), class:'centerAlign', 'font-size':8
+                }).text(`SP2003[${n}]`).appendTo(svg);
+                $(document.createElementNS(xmlns, 'rect')).attr({
+                    x:sx, y:sy, width:w, height:h,
+                    fill:'transparent', stroke:'black', 'stroke-width':'1'
+                }).appendTo(svg);
+            }
+
+
+            function toHexString(arr) {
+                return arr.map(function(val) {
+                    return '0x' + val.toString(16).toUpperCase();
+                }).join(' ');
+            }
+
+            function toHexByteString(bytes) {
+                return bytes.map(function(byte) {
+                    return '0x' + ('0' + (byte & 0xFF).toString(16).toUpperCase()).slice(-2);
+                }).join(' ')
+            }
+        </script>
+    </body>
+</html>
+

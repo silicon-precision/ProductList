@@ -1,0 +1,2052 @@
+<!DOCTYPE HTML>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <title>STA Emulator</title>
+        <link rel="stylesheet" href="styles/style.css">
+        <link rel="stylesheet" href="styles/button.css">
+        <!--
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
+        <script type="text/javascript" src="constants/jquery-3.4.1.min.js"></script>
+        <script type="text/javascript" src="constants/xlsx.full.min.js"></script>
+        <script type="text/javascript" src="constants/constants.js"></script>
+        <script type="text/javascript" src="./Bank Map.json"></script>
+        <script type="text/javascript" src="./Wafer Map.json"></script>
+        -->
+        <script type="text/javascript" src="constants/constants.json"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
+        <style>
+/*
+ * Copyright (c) 2012-2013 Thibaut Courouble
+ * http://www.cssflow.com
+ * Licensed under the MIT License
+ *
+ * Sass/SCSS source: https://goo.gl/qEV26
+ * PSD by Hemn Chawroka: https://goo.gl/nXZHJ
+ */
+
+/*
+body {
+  font: 13px/20px "Lucida Grande", Tahoma, Verdana, sans-serif;
+  color: #404040;
+  background: #93cedf;
+}
+*/
+
+/*
+.container {
+  margin: 80px auto;
+  width: 300px;
+  text-align: center;
+}
+
+.container > .dropdown {
+  margin: 0 20px;
+  vertical-align: top;
+}
+*/
+
+.dropdown {
+  display: inline-block;
+  position: relative;
+  top:10px;
+  overflow: hidden;
+  height: 28px;
+  width: 120px;
+  background: #f2f2f2;
+  border: 1px solid;
+  border-color: white #f7f7f7 whitesmoke;
+  border-radius: 3px;
+  background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.06));
+  background-image: -moz-linear-gradient(top, transparent, rgba(0, 0, 0, 0.06));
+  background-image: -o-linear-gradient(top, transparent, rgba(0, 0, 0, 0.06));
+  background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.06));
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+}
+
+.dropdown:before, .dropdown:after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  top: 9px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 4px dashed;
+  border-color: #888888 transparent;
+  pointer-events: none;
+}
+
+.dropdown:before {
+  border-bottom-style: solid;
+  border-top: none;
+}
+
+.dropdown:after {
+  margin-top: 7px;
+  border-top-style: solid;
+  border-bottom: none;
+}
+
+.dropdown-select {
+  position: relative;
+  width: 130%;
+  margin: 0;
+  padding: 6px 8px 6px 10px;
+  height: 28px;
+  line-height: 14px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #62717a;
+  text-shadow: 0 1px white;
+  background: #f2f2f2;
+  background: rgba(0, 0, 0, 0) !important;
+  border: 0;
+  border-radius: 0;
+  -webkit-appearance: none;
+}
+
+.dropdown-select:focus {
+  z-index: 3;
+  width: 100%;
+  color: #394349;
+  outline: 2px solid #49aff2;
+  outline: 2px solid -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+.dropdown-select > option {
+  margin: 3px;
+  padding: 6px 8px;
+  text-shadow: none;
+  background: #f2f2f2;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.lt-ie9 .dropdown {
+  z-index: 1;
+}
+
+.lt-ie9 .dropdown-select {
+  z-index: -1;
+}
+
+.lt-ie9 .dropdown-select:focus {
+  z-index: 3;
+}
+
+@-moz-document url-prefix() {
+  .dropdown-select {
+    padding-left: 6px;
+  }
+}
+
+.dropdown-dark {
+  background: #444;
+  border-color: #111111 #0a0a0a black;
+  background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.4));
+  background-image: -moz-linear-gradient(top, transparent, rgba(0, 0, 0, 0.4));
+  background-image: -o-linear-gradient(top, transparent, rgba(0, 0, 0, 0.4));
+  background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.4));
+  -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.1), 0 1px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.1), 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-dark:before {
+  border-bottom-color: #aaa;
+}
+
+.dropdown-dark:after {
+  border-top-color: #aaa;
+}
+
+.dropdown-dark .dropdown-select {
+  color: #aaa;
+  text-shadow: 0 1px black;
+  background: #444;
+}
+
+.dropdown-dark .dropdown-select:focus {
+  color: #ccc;
+}
+
+.dropdown-dark .dropdown-select > option {
+  background: #444;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.4);
+}
+
+                .input-number {
+                    background-color:Lavender;
+                    border-radius:4px;
+                    height:20px;
+                }
+        </style>
+    </head>
+
+    <body>
+        <center>
+        <section class="container" style="display:inline-block">
+        <strong><label for="id-device" class="labeltext text">Device</label></strong>
+        <div class="dropdown" style="display:inline-block">
+        <select id="id-device" name="Device" class="dropdown-select" style='background-color: powderblue;'>
+            <optgroup label="1st Gen STA">
+            <option value='STA-101A' style='background-color:sandybrown'>STA-1.01A</option>
+            <option value='STA-2' style='background-color:sandybrown'>STA-2</option>
+            <option value='STA-201' style='background-color:sandybrown'>STA-2.01</option>
+            <option value='STA-3B' style='background-color:sandybrown'>STA-3B</option>
+            <option value='STA-FX' style='background-color:sandybrown'>STA-FX</option>
+            <option value='STA-FX2' style='background-color:sandybrown'>STA-FX2</option>
+            <option value='STA-FX3' style='background-color:lightgreen'>STA-FX3</option>
+            <optgroup label="2nd Gen STA">
+            <option value='STA-10' style='background-color:sandybrown'>STA-10</option>
+            <option value='STA-20' style='background-color:sandybrown'>STA-20</option>
+            <option value='STA-30' style='background-color:sandybrown'>STA-30</option>
+            <option value='STA-N' style='background-color:sandybrown' selected='selected'>STA-N</option>
+            <option value='MCC16' style='background-color:sandybrown'>MCC16</option>
+            <option value='STA-X' style='background-color:sandybrown'>STA-X</option>
+            <option value='STA-3X' style='background-color:sandybrown'>STA-3X</option>
+            <option value='STA-XF' style='background-color:sandybrown'>STA-XF</option>
+            <optgroup label="Other">
+            <option value='HSS32' style='background-color:lightgreen'>HSS32</option>
+            <option value='HSS64' style='background-color:lightgreen'>HSS64</option>
+            <option value='LPS1001' style='background-color:lightgreen'>LPS1001</option>
+            <option value='LPS1002' style='background-color:lightgreen'>LPS1002</option>
+            <option value='LPS2002' style='background-color:lightgreen'>LPS2002</option>
+            <option value='LPS2004' style='background-color:lightgreen'>LPS2004</option>
+            <option value='SP2003' style='background-color:lightgreen'>SP2003</option>
+            <option value='PS1120' style='background-color:lightgreen'>PS1120</option>
+            <option value='PS1060' style='background-color:lightgreen'>PS1060</option>
+            <option value='PS1030' style='background-color:lightgreen'>PS1030</option>
+        </select>
+        </div>
+        &emsp;
+        <strong><label for="id-cmd" class="labeltext text">Command</label></strong>
+        <!--
+        <select id="STA-3B" name="Command" class='Command' style='background-color: powderblue; visibility:hidden'>
+        -->
+        <div class="dropdown" style="display:inline-block">
+        <select id="oldCommand" name="LogicCommand" class='Command dropdown-select' style='background-color: powderblue; display:inline-block'>
+            <optgroup label='1-clock command'>
+            <option value="0x00" style='background-color:lightgreen' selected="selected">NORMAL</option>
+            <option value="0x01" style='background-color:lightgreen'>LOAD_ALL</option>
+            <option value="0x02" style='background-color:lightgreen'>VIRTUAL</option>
+            <option value="0x03" style='background-color:yellow'>CLEAR_ALL</option>
+            <option value="0x04" style='background-color:yellow'>ENABLE_ALL</option>
+            <option value="0x05" style='background-color:yellow'>INITIAL_ALL</option>
+            <optgroup label='2-clock command'>
+            <option value="0x10" style='background-color:sandybrown'>AND_CRL</option>
+            <option value="0x11" style='background-color:sandybrown'>OR_CRL</option>
+            <option value="0x12" style='background-color:sandybrown'>DIRECT_CRL</option>
+            <option value="0x13" style='background-color:sandybrown'>DIRECT_CHL</option>
+            <option value="0x14" style='background-color:sandybrown'>REJECT_CRL</option>
+            <option value="0x18" style='background-color:sandybrown'>AND_SWL</option>
+            <option value="0x19" style='background-color:sandybrown'>OR_SWL</option>
+            <option value="0x1A" style='background-color:sandybrown'>DIRECT_SWL</option>
+            <option value="0x1C" style='background-color:sandybrown'>REJECT_SWL</option>
+            <option value="0x1D" style='background-color:sandybrown'>CANCEL_RJT</option>
+        </select>
+        <!--
+            MCC16, STA-N, STA-10, STA-20, STA-30
+        -->
+        <select id="newCommand" name="LogicCommand" class='Command dropdown-select' style='background-color: powderblue; display:inline-block'>
+            <optgroup label='1-clock command'>
+            <option value="0x02" style='background-color:lightgreen' selected="selected">RESET_ALL</option>
+            <option value="0x03" style='background-color:lightgreen'>CLEAR_ALL</option>
+            <option value="0x04" style='background-color:lightgreen'>ENABLE_ALL</option>
+            <option value="0x05" style='background-color:lightgreen'>INITIAL_ALL</option>
+            <option value="0x0B" style='background-color:yellow'>EN1_WCON</option>
+            <option value="0x0C" style='background-color:yellow'>EN2_WCON</option>
+            <option value="0x0D" style='background-color:yellow'>DIS_WCON</option>
+            <optgroup label='2-clock command'>
+            <option value="0x12" style='background-color:sandybrown'>DIRECT_CHP_COR</option>
+            <option value="0x13" style='background-color:sandybrown'>DIRECT_BNK_COR</option>
+            <option value="0x14" style='background-color:sandybrown'>REJECT_CHP_COR</option>
+            <option value="0x15" style='background-color:sandybrown'>DIRECT_CHP_CHN</option>
+            <option value="0x16" style='background-color:sandybrown'>DIRECT_BNK_CHN</option>
+            <option value="0x17" style='background-color:sandybrown'>REJECT_CHP_CHN</option>
+            <option value="0x1A" style='background-color:sandybrown'>DIRECT_COR_SW</option>
+            <option value="0x1B" style='background-color:sandybrown'>DIRECT_CHN_SW</option>
+            <option value="0x1C" style='background-color:sandybrown'>REJECT_COR_SW</option>
+            <option value="0x1D" style='background-color:sandybrown'>REJECT_CHN_SW</option>
+            <option value="0x11" style='background-color:yellow'>WR_GCON</option>
+            <option value="0x18" style='background-color:yellow'>WR_CLCON</option>
+            <option value="0x19" style='background-color:yellow'>WR_TSDCON</option>
+        </select>
+        </div>
+        </section>
+
+        &emsp;
+        <div id='ChipID' class="labeltext text" style='display:none;'>
+            <b>Chip ID</b>
+            <input type='number' id='ChipNum' class='input-number' min=0 max=31 step=1 value=0 placeholder='Chip ID' style='width:40px'>
+        </div>
+        <div id='CoreID' class="labeltext text" style='display:none;'>
+            <b>Core ID</b>
+            <input type='number' id='CoreNum' class='input-number' min=0 max=7 step=1 value=0 placeholder='Core ID' style='width:40px'>
+        </div>
+        <div id='WData' class="labeltext text" style='display:none;'>
+            <b>Data</b>
+            <input id='DataNum' class='input-number' value=0xA5 placeholder='Hex Data' style='width:40px'>
+        </div>
+        <!--
+        <div id='ChipID' class="labeltext text" style='display:inline-block;'>
+            <b>Chip ID</b>
+            <input type='number' id='ChipNum' class='input-number' min=0 max=31 step=1 value=0 placeholder='Chip ID' style='width:40px'>
+        </div>
+        <div id='CoreID' class="labeltext text" style='display:inline-block;'>
+            <b>Core ID</b>
+            <input type='number' id='CoreNum' class='input-number' min=0 max=7 step=1 value=0 placeholder='Core ID' style='width:40px'>
+        </div>
+        <div id='WData' class="labeltext text" style='display:inline-block;'>
+            <b>Data</b>
+            <input id='DataNum' class='input-number' value=0xA5 placeholder='Hex Data' style='width:40px'>
+        </div>
+        -->
+        &emsp;
+        <input type="button" class='button green' id="send" value="Send">
+        </br>
+        <input type="button" class='button teal' id="package" value="Package">
+        <input type="button" class='button purple' id="feature" value="Feature">
+        <input type="button" class='button blue_alt' id="datasheet" value="Datasheet">
+        <input type="button" class='button crisp' id="overview" value="Overview">
+        </br>
+        </br>
+
+        <div id='tooltip' style='position:absolute; display:none;'></div>
+        <div id='svgContainer1' name='container' align="center"></div>
+        <div id='svgContainer2' name='container' align="center"></div>
+        <div id='svgContainer3' name='container' align="center"></div>
+
+
+        <script type="text/javascript">
+            const xmlns = "http://www.w3.org/2000/svg";
+            const FirstDeviceList = ['STA-101A', 'STA-2', 'STA-201', 'STA-3B', 'STA-FX', 'STA-FX2', 'STA-FX3'];
+            const SecondDeviceList = ['MCC16', 'STA-N', 'STA-10', 'STA-20', 'STA-30', 'STA-X', 'STA-3X', 'STA-XF'];
+            const ThirdDeviceList = ['PS1120', 'PS1060', 'PS1030', 'SP2003'];
+            const MCC16_Valid_Switch = [4, 6, 10, 12, 16, 20, 26, 28, 30, 36, 40, 42, 48, 54, 60, 62];
+
+            var BankMap;
+            var first = 1;
+            var deviceName;
+
+            var maxChip = 8;
+            var svg1;
+            var svg2;
+            var svg3;
+//            $(document).ready(function(){
+            $(function(){
+                first = 1;
+
+                /*
+                // Object Array에서 특정 Member의 값을 check하는 방법.
+                var valid = MyObjectArray.some(sw => sw.PinNumber === 1);
+                console.log(`valid = ${valid}`);
+                // Object Array에서 특정 Member에 대해서 주어진 값을 갖는 Array의 index를 구하는 방법.
+                var index = MyObjectArray.findIndex(object => { return object.LogicNumber === 4; });
+                console.log(`index = ${index}`);
+                */
+
+                var color = $('#id-device').find('option:selected').css('background-color');
+                $('#id-device').css({'background-color':color});
+
+                deviceName = $('#id-device').val();
+                console.log(deviceName);
+
+                createWindow(deviceName);
+
+                // 브라우저의 Window 크기에 맞추어서 svg영역을 재설정한다.
+                var w = $(window).width();
+                var h = $(window).height();
+//                console.log(`window size : (${w} x ${h})`);
+
+//                $('#ProbeCard').width(w-30);
+//                $('#ProbeCard').height(h-100);
+//                console.log(`inner size : ${$('#ProbeCard').innerWidth()} x ${$('#ProbeCard').innerHeight()}`);
+//                console.log(`rect width = ${$('#Card').width()}`);
+//                console.log('SelectedDut : ', SelectedDut);
+
+                console.log(`device Name : ${deviceName}`);
+                var cmd;
+                $('.Command').css('display', 'none');
+//                var color = $('#id-device').find('option:selected').css('background-color');
+                if( FirstDeviceList.includes(deviceName) ) {
+                    $(`#oldCommand`).css('display', 'inline-block');
+                    cmd = parseInt($('#oldCommand').val());
+                    console.log(`device = ${deviceName}, cmd = 0x${cmd.toString(16)}`);
+
+                    if( cmd < 0x10 ) {
+                        $('#ChipID').css('display', 'none');
+                        $('#CoreID').css('display', 'none');
+                        $('#WData').css('display', 'none');
+                    } else if( (cmd == 0x10) || (cmd == 0x11) || (cmd == 0x12) || (cmd == 0x14) ) {          // AND_CRL
+                        $('#ChipID').css('display', 'inline-block');
+                        $('#CoreID').css('display', 'none');
+                        $('#WData').css('display', 'inline-block');
+                    } else if( cmd == 0x13 ) {          // OR_CRL
+                        $('#ChipID').css('display', 'none');
+                        $('#CoreID').css('display', 'none');
+                        $('#WData').css('display', 'inline-block');
+                    } else if( (cmd == 0x18) || (cmd == 0x19) || (cmd == 0x1A) || (cmd == 0x1C) || (cmd == 0x1D) ) {          // AND_CRL
+                        $('#ChipID').css('display', 'inline-block');
+                        $('#CoreID').css('display', 'inline-block');
+                        $('#WData').css('display', 'inline-block');
+                    }
+                } else if( SecondDeviceList.includes(deviceName) ) {
+                    $('#newCommand').css('display', 'inline-block');
+                    cmd = parseInt($('#newCommand').val());
+                    console.log(`device = ${deviceName}, cmd = 0x${cmd.toString(16)}`);
+
+                    if( cmd < 0x10 ) {
+                        $('#ChipID').css('display', 'none');
+                        $('#CoreID').css('display', 'none');
+                        $('#WData').css('display', 'none');
+                    } else if( (cmd == 0x11) || (cmd == 0x12) || (cmd == 0x14) || (cmd == 0x15) || (cmd == 0x17) || (cmd == 0x18) || (cmd == 0x19) ) {
+                        $('#ChipID').css('display', 'inline-block');
+                        $('#CoreID').css('display', 'none');
+                        $('#WData').css('display', 'inline-block');
+                    } else if( (cmd == 0x13) || (cmd == 0x16) ) {
+                        $('#ChipID').css('display', 'none');
+                        $('#CoreID').css('display', 'none');
+                        $('#WData').css('display', 'inline-block');
+                    } else if( (cmd == 0x1A) || (cmd == 0x1B) || (cmd == 0x1C) || (cmd == 0x1D) ) {
+                        $('#ChipID').css('display', 'inline-block');
+                        $('#CoreID').css('display', 'inline-block');
+                        $('#WData').css('display', 'inline-block');
+                    }
+                } else {
+                    console.log('unknown device');
+                }
+
+
+            });
+
+            // 브라우저 windows의 크기를 변경하면 Call된다.
+            $(window).resize( function() {
+                var w = $(window).width();
+                var h = $(window).height();
+
+//                $("#ProbeCard").width(w-30);
+//                $("#ProbeCard").height(h-100);
+
+//            console.log(`inner size : ${$('#ProbeCard').innerWidth()} x ${$('#ProbeCard').innerHeight()}`);
+        });
+
+            function showTooltip(event, chip, sw) {
+//                console.log(event);
+//                console.log(`chip = ${chip}, sw = ${sw}`);
+
+                let tooltip = document.getElementById('tooltip');
+                var channel = BankMap.Banks[0].Devices[chip].Switchs[sw];
+                tooltip.innerHTML = `OnOff = ${channel.OnOff}, Reject = ${channel.Reject}`;
+                tooltip.style.display = 'block';
+                tooltip.style.left = event.pageX + 'px';
+                tooltip.style.top = event.pageY + 'px';
+//                console.log(`value = ${event.target.getAttribute('value')} mouse enter event x = ${event.pageX}, y = ${event.pageY}\n`);
+            }
+
+            function hideTooltip(event) {
+                let tooltip = document.getElementById('tooltip');
+                tooltip.style.display = 'none';
+//                console.log(`mouse out event x = ${event.pageX}, y = ${event.pageY}\n`);
+            }
+
+            function createWindow(name) {
+                BankMap = new Object();
+                BankMap.device = name;
+                BankMap.Banks = [];
+                BankMap.BankCnt = 2;
+                for(var bank=0; bank<BankMap.BankCnt; bank++) {
+                    var Bank = new Object();
+                    Bank.DeviceCnt = 32;
+                    Bank.Chip = 0;          // 0 ~ 31, 32(All)
+                    Bank.Core = 0;          // 0 ~ 7
+                    Bank.Cmd = 0;           // 0 ~ 0xF
+                    Bank.Data = 0;          // 0 ~ 0xFF
+                    Bank.Devices = [];
+                    for(var dev=0; dev<Bank.DeviceCnt; dev++) {
+                        var Device = new Object();
+                        Device.ID = dev;
+                        Device.GCON = 0;
+                        Device.CLCON = 0;
+                        Device.TSDCON = 0;
+                        Device.WriteEnable = 0;
+                        if( name == 'STA-101A' ) {
+                            /* 32-Channel CMOS Analog Switches.
+                             */
+                            Device.nCore = 8;
+                            Device.nChannel = 4;
+                        } else {
+//                        } else if( (name == 'STA-3B') || (name == 'STA-201') || (name == 'STA-2') ) {
+                            /* 64-Channel CMOS Analog Switches.
+                             * nCore : 8, nChannel : 8
+                             */
+//                            Device.nCore = 8;
+//                            Device.nChannel = 8;
+//                        } else if( (name == 'STA-XF') || (name == 'STA-3X') || (name == 'STA-X') ) {
+                            /* 128-Channel CMOS Analog Switches.
+                             */
+//                            Device.nCore = 8;
+//                            Device.nChannel = 8;
+//                        } else if( (name == 'STA-FX') || (name == 'STA-FX2') ) {
+                            /* 128-Channel CMOS Analog Switches.
+                             */
+//                            Device.nCore = 8;
+//                            Device.nChannel = 8;
+//                        } else if( name == 'STA-101A' ) {
+                            /* 32-Channel CMOS Analog Switches.
+                             */
+//                            Device.nCore = 8;
+//                            Device.nChannel = 4;
+//                        } else if( name == 'STA-10' ) {
+                            /* 32-Channel CMOS Analog Switches.
+                             * 내부적으로 64-channel이 있고, 2개 channel이 내부적으로 묶여있다.
+                             * Even Switch를 ON/OFF하여 2개 channel을 동시에 제어할 수 있고, Odd Switch는 영향을 주지 않는다.
+                             */
+//                            Device.nCore = 8;
+//                            Device.nChannel = 8;
+//                        } else if( (name == 'STA-201') || (name == 'STA-20') || (name == 'STA-30') ) {
+                            /* 64-Channel CMOS Analog Switches.
+                             */
+//                            Device.nCore = 8;
+//                            Device.nChannel = 8;
+//                        } else if( name == 'STA-N' ) {
+                            /* 4/8-IN 64-OUT CMOS Analog Switches
+                             */
+//                            Device.nCore = 8;
+//                            Device.nChannel = 8;
+//                        } else if( name == 'MCC16' ) {
+                            /* 16-channel Current Limit Switch IC
+                             * core[0] : SW2/3
+                             * core[1] : SW5/6
+                             * core[2] : SW8/10
+                             * core[3] : SW13/14/15
+                             * core[4] : SW18
+                             * core[5] : SW20/21
+                             * core[6] : SW24/27
+                             * core[6] : SW30/31
+                             */
+                            Device.nCore = 8;
+                            Device.nChannel = 8;
+                        }
+                        Device.Switchs = [];
+                        for(var sw=0; sw<(Device.nCore*Device.nChannel); sw++) {
+                            var Switch = new Object();
+                            Switch.Number = sw;
+                            if( name === 'MCC16') {
+                                Switch.Valid = MCC16_Valid_Switch.includes(sw);
+                            } else if( name === 'STA-10' ) {
+                                Switch.Valid = (sw & 0x1) ? false : true;
+                            } else {
+                                Switch.Valid = true;
+                            }
+                            Switch.OnOff = 0;                   // OFF : 0, ON : 1
+                            Switch.Reject = 1;                  // REJECT : 0, RELEASE : 1
+                            Device.Switchs.push(Switch);
+                        }
+                        Bank.Devices.push(Device);
+                    }
+                    BankMap.Banks.push(Bank);
+                }
+                console.log(BankMap);
+
+                drawBank(0);
+            }
+
+            function drawBank(state) {      // 0 : Before State, 1 : After State.
+                if( state == 1 ) {      // After state.
+                    document.getElementById('svgContainer3').innerHTML = ""; // 기존에 생성된 Wafer Map을 제거한다.
+                    svg3 = document.createElementNS(xmlns, 'svg');
+                } else {                // Before state.
+                    document.getElementById('svgContainer1').innerHTML = ""; // 기존에 생성된 Wafer Map을 제거한다.
+                    svg1 = document.createElementNS(xmlns, 'svg');
+                }
+
+                // drawing svg
+                var svg = (state == 1) ? svg3 : svg1;
+                var svgWidth = 685;
+                var svgHeight = (deviceName == 'STA-101A') ? 119 : 189;
+                $(svg).attr({
+                    id:'ApplicationBoard', align:'center', width:'100%', height:'100%',
+                    viewBox:`0 0 ${svgWidth} ${svgHeight}`
+                });
+
+                if( state == 0 ) {      // Before state.
+                    $(document.createElementNS(xmlns, 'rect')).attr({
+                        x:0, y:0, width:svgWidth, height:svgHeight,
+                        fill:'transparent', stroke:'gray', 'stroke-width':'1', 'fill-opacity':0.5,
+                    }).appendTo(svg);
+                }
+
+                var x, y, w, h;
+
+                var x = 10;
+                var y = (state == 1) ? 5 : 5;
+                var w = 328;
+                var h = (deviceName === 'STA-101A') ? 110 : 180;
+
+                var nCore = BankMap.Banks[0].Devices[0].nCore;
+                var nChannel = BankMap.Banks[0].Devices[0].nChannel;
+
+                // 128-channel Device check.
+                if( (deviceName == 'STA-XF') || (deviceName == 'STA-3X') || (deviceName == 'STA-X') || (deviceName == 'STA-FX') || (deviceName == 'STA-FX2') ) {
+                    $(document.createElementNS(xmlns, 'text')).attr({
+                        x:x+w+7, y:y+8, class:'centerAlign', 'font-size':9
+                    }).text(`${deviceName}`).appendTo(svg);
+
+                    $(document.createElementNS(xmlns, 'rect')).attr({
+                        x:x-2, y:y-2, width:(w*2)+14, height:h+4,
+                        fill:'transparent', stroke:'black', 'stroke-width':1,
+                    }).appendTo(svg);
+                }
+                drawDevice(svg, 1, nCore, nChannel, x, y, w, h);
+                drawDevice(svg, 2, nCore, nChannel, x+w+10, y, w, h);
+
+                if( state == 1 ) {      // After state.
+                    document.getElementById("svgContainer3").appendChild(svg);
+                } else {                // Before state.
+                    document.getElementById("svgContainer1").appendChild(svg);
+                }
+            }
+
+            function drawDevice(svg, chip, nCore, nChannel, sx, sy, sw, sh) {
+//                console.log(`nCore = ${nCore}, nChannel = ${nChannel}`);
+                var x, y, w, h;
+                var core;
+                var channel;
+
+                // 128-channel Device check.
+                if( (deviceName == 'STA-XF') || (deviceName == 'STA-3X') || (deviceName == 'STA-X') || (deviceName == 'STA-FX') || (deviceName == 'STA-FX2') ) {
+                    $(document.createElementNS(xmlns, 'text')).attr({
+                        x:sx+(sw/2), y:sy+(10), class:'centerAlign', 'font-size':8
+                    }).text(`${(chip & 0x1)? 'Bottom' : 'Top'} [ID=${chip}]`).appendTo(svg);
+
+                    $(document.createElementNS(xmlns, 'rect')).attr({
+                        x:sx, y:sy, width:sw, height:sh,
+                        fill:'transparent', stroke:'black', 'stroke-dasharray':'1,1', 'stroke-width':1,
+                    }).appendTo(svg);
+                } else {
+                    $(document.createElementNS(xmlns, 'text')).attr({
+                        x:sx+(sw/2), y:sy+(10), class:'centerAlign', 'font-size':8
+                    }).text(`${deviceName} [ID=${chip}]`).appendTo(svg);
+
+                    $(document.createElementNS(xmlns, 'rect')).attr({
+                        x:sx, y:sy, width:sw, height:sh,
+                        fill:'transparent', stroke:(ChipID == chip)?'red':'black', 'stroke-width':1,
+                    }).appendTo(svg);
+                }
+
+                x = sx + 10;
+                y = sy + 10;
+                for(core=0; core<nCore; core++) {
+                    y = sy + 20;
+                    // insert text.
+                    // draw rect.
+                    $(document.createElementNS(xmlns, 'text')).attr({
+                        x:x+(28/2), y:y+(7), class:'centerAlign', 'font-size':8,
+                    }).text(`Core ${core}`).appendTo(svg);
+                    $(document.createElementNS(xmlns, 'rect')).attr({
+                        x:x, y:y, width:28, height:(18*nChannel)+12, value:`core${core}`,
+                        fill:'transparent', stroke:'black', 'stroke-width':1,
+                        onclick:((svg == svg1) ? `toggleCore(${chip}, ${core})` : ''),
+                    }).appendTo(svg);
+                    for(channel=0; channel<nChannel; channel++) {
+                        y += 18;
+                        drawSwitch(svg, chip, (core * nChannel) + channel, x, y);  // ctrl: 0(OFF), 1(ON), 2(REJECT)
+                    }
+                    x += 40;
+                }
+
+
+                if( svg == svg3 ) {
+                    var cmd = BankMap.Banks[0].Cmd;
+                    if( BankMap.Banks[0].Cmd < 0x10 ) {              // all device all switch selected.
+                        $(document.createElementNS(xmlns, 'rect')).attr({
+                            x:sx+3, y:sy+3, width:sw-6, height:sh-6, rx:10, ry:10,
+                            fill:'transparent', stroke:'red', 'stroke-width':2,
+                        }).appendTo(svg);
+                    } else if( (cmd == 0x10) || (cmd == 0x11) || (cmd == 0x12) ) {    // selected device all core channel selected.
+                        if( BankMap.Banks[0].Chip == chip ) {
+                            $(document.createElementNS(xmlns, 'rect')).attr({
+                                x:sx+3, y:sy+3, width:sw-6, height:sh-6, rx:10, ry:10,
+                                fill:'transparent', stroke:'red', 'stroke-width':2,
+                            }).appendTo(svg);
+
+                            var x = sx-5;
+                            var y = sy+40;
+                            var data = BankMap.Banks[0].Data;
+                            for(var i=0; i<8; i++) {
+                                $(document.createElementNS(xmlns, 'text')).attr({
+                                    x:x, y:y, 'fill':'red', 'font-weight':'bold', 'font-size':10,
+                                }).text((data & BitMask[i])?'1':'0').appendTo(svg);
+                                y += 18;
+                            }
+                        }
+                    } else if( (cmd == 0x13) ) {        // all device all core channel selected.
+                            $(document.createElementNS(xmlns, 'rect')).attr({
+                                x:sx+3, y:sy+3, width:sw-6, height:sh-6, rx:10, ry:10,
+                                fill:'transparent', stroke:'red', 'stroke-width':2,
+                            }).appendTo(svg);
+
+                            var x = sx-5;
+                            var y = sy+40;
+                            var data = BankMap.Banks[0].Data;
+                            for(var i=0; i<8; i++) {
+                                $(document.createElementNS(xmlns, 'text')).attr({
+                                    x:x, y:y, 'fill':'red', 'font-weight':'bold', 'font-size':10,
+                                }).text((data & BitMask[i])?'1':'0').appendTo(svg);
+                                y += 18;
+                            }
+                    } else if( (cmd == 0x14) ) {        // selected device all core selected.
+                        if( BankMap.Banks[0].Chip == chip ) {
+                            $(document.createElementNS(xmlns, 'rect')).attr({
+                                x:sx+3, y:sy+3, width:sw-6, height:sh-6, rx:10, ry:10,
+                                fill:'transparent', stroke:'red', 'stroke-width':2,
+                            }).appendTo(svg);
+
+                            var x = sx+20;
+                            var y = sy+20;
+                            var data = BankMap.Banks[0].Data;
+                            for(var i=0; i<8; i++) {
+                                $(document.createElementNS(xmlns, 'text')).attr({
+                                    x:x, y:y, 'fill':'red', 'font-weight':'bold', 'font-size':10,
+                                }).text((data & BitMask[i])?'1':'0').appendTo(svg);
+                                x += 40;
+                            }
+                        }
+                    } else if( (cmd == 0x18) || (cmd == 0x19) || (cmd == 0x1A) || (cmd == 0x1C) || (cmd == 0x1D) ) {        // selected device selected core switch selected.
+                        if( BankMap.Banks[0].Chip == chip ) {
+                            var core = BankMap.Banks[0].Core;
+                            $(document.createElementNS(xmlns, 'rect')).attr({
+                                x:sx+4+(40*core), y:sy+3, width:40, height:sh-6, rx:10, ry:10,
+                                fill:'transparent', stroke:'red', 'stroke-width':2,
+                            }).appendTo(svg);
+
+                            var x = sx-5;
+                            var y = sy+40;
+                            var data = BankMap.Banks[0].Data;
+                            for(var i=0; i<8; i++) {
+                                $(document.createElementNS(xmlns, 'text')).attr({
+                                    x:x, y:y, 'fill':'red', 'font-weight':'bold', 'font-size':10,
+                                }).text((data & BitMask[i])?'1':'0').appendTo(svg);
+                                y += 18;
+                            }
+                        }
+                    }
+                }
+            }
+
+            function drawSwitch(svg, chip, sw, sx, sy) {    // ctrl : 0(OFF), 1(ON), 2(REJECT)
+//                console.log(`chip = ${chip}, switch = ${sw}`);
+                var channel = BankMap.Banks[0].Devices[chip].Switchs[ sw ];
+                var color;
+                var pov = (svg == svg1) ? 'OLD' : 'NEW';
+                var fillcolor = 'transparent';
+                var w = 10
+
+
+                if( channel.Valid ) {
+                    if( channel.Reject == 0 ) {     // REJECT(gray)
+                        color = 'gray';
+                        fillcolor = 'gray';
+                    } else {
+                        color = (channel.OnOff == 0) ? 'blue' : 'red';
+                        fillcolor = (channel.OnOff == 0) ? 'blue' : 'red';
+                    }
+                } else {
+                    color = 'Silver';
+                }
+
+                $(document.createElementNS(xmlns, 'path')).attr({
+                    d:`M ${sx-5} ${sy} l ${w} 0`,
+                    stroke:(channel.Valid?'black':'Silver'), 'stroke-width':1,
+                }).appendTo(svg);
+
+                $(document.createElementNS(xmlns, 'text')).attr({
+                    x:sx+(28/2), y:sy+(6), 'font-size':6, fill:color,
+                    class:`${pov} CHIP${chip} SW${sw} centerAlign`,
+                }).text(channel.Valid ? `SW${sw}` : 'NC').appendTo(svg);
+                $(document.createElementNS(xmlns, 'circle')).attr({
+                    cx:sx+5+2, cy:sy, r:2, stroke:color, fill:fillcolor,
+                    class:`${pov} CHIP${chip} SW SW${sw} DOT`,
+                }).appendTo(svg);
+
+                if( channel.Valid ) {
+                    $(document.createElementNS(xmlns, 'path')).attr({
+                        d:`M ${sx+5+4} ${sy-4} l ${w} 0`,
+                        stroke:color, 'stroke-width':1, visibility:(channel.Reject==0)?'visible':'hidden',
+                        class:`${pov} CHIP${chip} SW SW${sw} REJECT`,
+                    }).appendTo(svg);
+                    $(document.createElementNS(xmlns, 'path')).attr({
+                        d:`M ${sx+5+4} ${sy} l ${w} 0`,
+                        stroke:color, 'stroke-width':1, visibility:(channel.Reject==0)?'hidden':((channel.OnOff==1)?'visible':'hidden'),
+                        class:`${pov} CHIP${chip} SW SW${sw} ON`,
+                    }).appendTo(svg);
+                    $(document.createElementNS(xmlns, 'path')).attr({
+                        d:`M ${sx+5+4} ${sy} l ${w} -4`,
+                        stroke:color, 'stroke-width':1, visibility:(channel.Reject==0)?'hidden':((channel.OnOff==0)?'visible':'hidden'),
+                        class:`${pov} CHIP${chip} SW SW${sw} OFF`,
+                    }).appendTo(svg);
+                }
+
+                $(document.createElementNS(xmlns, 'circle')).attr({
+                    cx:sx+5+4+10+2, cy:sy, r:2, stroke:color, fill:fillcolor,
+                    class:`${pov} CHIP${chip} SW SW${sw} DOT`,
+                }).appendTo(svg);
+
+                if( deviceName == 'STA-10' ) {
+                    $(document.createElementNS(xmlns, 'rect')).attr({
+                        x:sx+3, y:sy-6, width:22, height:14,
+                        fill:'transparent', stroke:color, 'stroke-width':1, 'stroke-opacity':0.5,
+                        class:`${pov} CHIP${chip} SW${sw}`,
+                        onclick:((svg == svg1) ? ((sw & 0x1) ? '':`toggleSwitch(${chip}, ${sw})`) : ''),
+                        onmouseover:`showTooltip(event, ${chip}, ${sw})`, onmouseout:'hideTooltip(event)',
+                    }).appendTo(svg);
+                } else {
+                    $(document.createElementNS(xmlns, 'rect')).attr({
+                        x:sx+3, y:sy-6, width:22, height:14,
+                        fill:'transparent', stroke:color, 'stroke-width':1, 'stroke-opacity':0.5,
+                        class:`${pov} CHIP${chip} SW${sw}`,
+                        onclick:((svg == svg1) ? (channel.Valid ? `toggleSwitch(${chip}, ${sw})` : '') : ''),
+                        onmouseover:`showTooltip(event, ${chip}, ${sw})`, onmouseout:'hideTooltip(event)',
+                    }).appendTo(svg);
+                }
+
+                $(document.createElementNS(xmlns, 'path')).attr({
+                    d:`M ${sx+5+4+10+4} ${sy} l ${w} 0`,
+                    stroke:channel.Valid ? 'black' : 'Silver', 'stroke-width':1,
+                }).appendTo(svg);
+            }
+
+
+            function toggleCore(chip, core) {
+//                console.log(`chip = ${chip}, core = ${core}`);
+//                console.log(BankMap);
+
+                // STA-10
+
+                var nChannel = BankMap.Banks[0].Devices[chip].nChannel;
+                console.log(`nChannel = ${nChannel}`);
+                BankMap.Banks[0].Devices[chip].Switchs.forEach(function(channel, sw) {
+                    if( core == parseInt(channel.Number / nChannel) ) {         // 'STA-101A' : 4, 'Other' : 8
+                        if( channel.Valid == false ) return;        // MCC16
+
+//                        console.log(sw);
+//                        console.log(JSON.stringify(channel));
+                        if( channel.Reject == 0 ) {  // when reject set.
+                            channel.Reject = 1;  // reject clear
+                            channel.OnOff = 0;   // switch off
+                        } else {                    // when reject clear.
+                            if( channel.OnOff == 1 ) {   // when switch on.
+                                channel.Reject = 0;  // reject set.
+                                channel.OnOff = 0;   // switch off
+                            } else {                    // when switch off.
+                                channel.Reject = 1;  // reject clear.
+                                channel.OnOff = 1;   // switch on
+                            }
+                        }
+//                        console.log(JSON.stringify(channel));
+
+                        $(`path.OLD.CHIP${chip}.SW${sw}`).attr('visibility', 'hidden');
+                        var color, select;
+                        if( channel.Reject == 0 ) {
+                            select = `.OLD.CHIP${chip}.SW${sw}.REJECT`;
+                            color = 'gray';
+                        } else {
+                            if( channel.OnOff == 1 ) {
+                                select = `.OLD.CHIP${chip}.SW${sw}.ON`;
+                                color = 'red';
+                            } else {
+                                select = `.OLD.CHIP${chip}.SW${sw}.OFF`;
+                                color = 'blue';
+                            }
+                        }
+//                        console.log(`color = ${color}`);
+                        $(select).attr('visibility', 'visible').attr('stroke', color);
+                        $(`circle.OLD.CHIP${chip}.SW${sw}`).attr('stroke', color).attr('fill', color);
+                        $(`rect.OLD.CHIP${chip}.SW${sw}`).attr('stroke', color);
+                        $(`text.OLD.CHIP${chip}.SW${sw}`).attr('fill', color);
+                    }
+                });
+            }
+
+            function toggleSwitch(chip, sw) {
+//                console.log(this);
+                console.log(`chip = ${chip}, switch = ${sw}`);
+                var color, select;
+                var channel = BankMap.Banks[0].Devices[chip].Switchs[ sw ];
+                console.log(JSON.stringify(channel));
+
+                if( channel.Reject == 0 ) {
+                    channel.Reject = 1;
+                    channel.OnOff = 0;
+                } else {
+                    if( channel.OnOff == 1 ) {
+                        channel.Reject = 0;
+                        channel.OnOff = 0;
+                    } else {
+                        channel.OnOff = 1;
+                        channel.Reject = 1;
+                    }
+                }
+
+                $(`path.OLD.CHIP${chip}.SW${sw}`).attr('visibility', 'hidden');
+                if( channel.Reject == 0 ) {
+                    select = `.OLD.CHIP${chip}.SW${sw}.REJECT`;
+                    color = 'gray';
+                } else {
+                    if( channel.OnOff == 1 ) {
+                        select = `.OLD.CHIP${chip}.SW${sw}.ON`;
+                        color = 'red';
+                    } else {
+                        select = `.OLD.CHIP${chip}.SW${sw}.OFF`;
+                        color = 'blue';
+                    }
+                }
+                $(select).attr('visibility', 'visible').attr('stroke', color);
+                $(`circle.OLD.CHIP${chip}.SW${sw}`).attr('stroke', color).attr('fill', color);
+                $(`rect.OLD.CHIP${chip}.SW${sw}`).attr('stroke', color);
+                $(`text.OLD.CHIP${chip}.SW${sw}`).attr('fill', color);
+
+                /*
+                if( deviceName == 'STA-10' ) {
+                    var pair = BankMap.Banks[0].Devices[chip].Switchs[ sw+1 ];
+                    if( channel.Reject == 0 ) {
+                        pair.Reject = 1;
+                        pair.OnOff = 0;
+                    } else {
+                        if( channel.OnOff == 1 ) {
+                            pair.Reject = 0;
+                            pair.OnOff = 0;
+                        } else {
+                            pair.OnOff = 1;
+                            pair.Reject = 1;
+                        }
+                    }
+
+                    sw = sw + 1;
+                    $(`path.OLD.CHIP${chip}.SW${sw}`).attr('visibility', 'hidden');
+                    if( channel.Reject == 0 ) {
+                        select = `.OLD.CHIP${chip}.SW${sw}.REJECT`;
+                        color = 'gray';
+                    } else {
+                        if( channel.OnOff == 1 ) {
+                            select = `.OLD.CHIP${chip}.SW${sw}.ON`;
+                            color = 'red';
+                        } else {
+                            select = `.OLD.CHIP${chip}.SW${sw}.OFF`;
+                            color = 'blue';
+                        }
+                    }
+                    $(select).attr('visibility', 'visible').attr('stroke', color);
+                    $(`circle.OLD.CHIP${chip}.SW${sw}`).attr('stroke', color).attr('fill', color);
+                    $(`rect.OLD.CHIP${chip}.SW${sw}`).attr('stroke', color);
+                    $(`text.OLD.CHIP${chip}.SW${sw}`).attr('fill', color);
+                }
+                */
+                console.log(JSON.stringify(channel));
+
+                console.log(BankMap);
+            }
+
+            /*
+            function drawSTA(svg, device, bank, chip, sx, sy, w, h) {
+                if( device == 6 ) {
+                    var x = sx + 10;
+                    var y = sy + 10;
+                    for(var channel=0; channel<8; channel++) {
+                        x = sx + 10;
+                        for(var core=0; core<8; core++) {
+                            $(document.createElementNS(xmlns, 'circle')).attr({
+                                cx:x, cy:y, r:2, stroke:'black', fill:'transparent',
+                                class:`BANK${bank} CHIP${chip} CORE${core} CHANNEL${channel} SW${(core*8)+channel} SW`,
+                            }).appendTo(svg);
+                            x = x + 10;
+                        }
+                        y = y + 10;
+                    }
+//                    console.log(`x = ${x}, y = ${y}`);
+
+                    $(document.createElementNS(xmlns, 'text')).attr({
+                        x:sx+(w/2), y:sy-(5), class:'centerAlign', 'font-size':8
+                    }).text(`STA-3X[${chip}]`).appendTo(svg);
+                    $(document.createElementNS(xmlns, 'rect')).attr({
+                        x:sx, y:sy, width:w, height:h, value:'STA-3X',
+                        fill:'transparent', stroke:'black', 'stroke-width':'1', onclick:'openChip(this)'
+                    }).appendTo(svg);
+                } else if( device == 7 ) {
+                    var x = sx + 10;
+                    var y = sy + 10;
+                    for(var die=0; die<2; die++) {
+                        for(var channel=0; channel<8; channel++) {
+                            x = sx + 10;
+                            for(var core=0; core<8; core++) {
+                                $(document.createElementNS(xmlns, 'circle')).attr({
+                                    cx:x, cy:y, r:2, stroke:'black', fill:'transparent',
+                                    class:`BANK${bank} CHIP${chip+die} CORE${core} CHANNEL${channel} SW${(core * 8)+channel} SW`,
+                                }).appendTo(svg);
+                                x = x + 10;
+                            }
+                            y = y + 10;
+                        }
+                    }
+                    console.log(`x = ${x}, y = ${y}`);
+
+                    $(document.createElementNS(xmlns, 'text')).attr({
+                        x:sx+(w/2), y:sy-(5), class:'centerAlign', 'font-size':8,
+                    }).text(`STA-3X[${chip}]`).appendTo(svg);
+                    $(document.createElementNS(xmlns, 'rect')).attr({
+                        x:sx, y:sy, width:w, height:h, value:'STA-3X',
+                        fill:'transparent', stroke:'black', 'stroke-width':'1', onclick:'openChip(this)'
+                    }).appendTo(svg);
+                }
+            }
+
+            function openChip(rect) {
+                console.log('rect = ', rect);
+                var value =  $(rect).attr('value');
+                console.log('value = ', value);
+
+
+                var width = 640;
+                var height = 480;
+                var top = 10;
+                var left = 10;
+
+                var url = 'Chip.html';
+
+                url += `?Device=${value}`;
+                var opt = `toolbar=no, menubar=no, location=no, status=no, target=_blank`;
+                    opt += `, width=${width}, height=${height}, top=${top}, left=${left}`;
+
+                window.open(url, `Chip Window Open`, opt);
+            }
+
+
+            function drawSP2003(n, sx, sy, w, h) {
+
+                var x = sx + 10;
+                var y = sy + 10;
+                for(var i=0; i<6; i++) {
+                    $(document.createElementNS(xmlns, 'rect')).attr({
+                        x:x, y:y, rx:3, ry:3, width:20, height:5,
+                        fill:'transparent', stroke:'black', 'stroke-width':'1'
+                    }).appendTo(svg);
+                    y = y + ((i==2) ? 20 : 10);
+                }
+
+                $(document.createElementNS(xmlns, 'text')).attr({
+                    x:sx+(w/2), y:sy-(5), class:'centerAlign', 'font-size':8
+                }).text(`SP2003[${n}]`).appendTo(svg);
+                $(document.createElementNS(xmlns, 'rect')).attr({
+                    x:sx, y:sy, width:w, height:h,
+                    fill:'transparent', stroke:'black', 'stroke-width':'1'
+                }).appendTo(svg);
+            }
+            */
+
+
+            function toHexString(arr) {
+                return arr.map(function(val) {
+                    return '0x' + val.toString(16).toUpperCase();
+                }).join(' ');
+            }
+
+            function toHexByteString(bytes) {
+                return bytes.map(function(byte) {
+                    return '0x' + ('0' + (byte & 0xFF).toString(16).toUpperCase()).slice(-2);
+                }).join(' ')
+            }
+
+            $('#package').on('click', function(e) {
+                var width = 640;
+                var height = 480;
+                var top = 10;
+                var left = 10;
+
+                var url = 'Package.html';
+
+                url += `?deviceName=${deviceName}`;
+                var opt = `toolbar=no, menubar=no, location=no, status=no, target=_blank`;
+                    opt += `, width=${width}, height=${height}, top=${top}, left=${left}`;
+
+                window.open(url, `Package Window Open`, opt);
+            });
+
+            $('#feature').on('click', function(e) {
+                var width = 640;
+                var height = 480;
+                var top = 10;
+                var left = 10;
+
+                var url = 'Feature.html';
+
+                url += `?deviceName=${deviceName}`;
+                var opt = `toolbar=no, menubar=no, location=no, status=no, target=_blank`;
+                    opt += `, width=${width}, height=${height}, top=${top}, left=${left}`;
+
+                window.open(url, `Feature Window Open`, opt);
+            });
+
+            $('#datasheet').on('click', function(e) {
+                var str;
+                var filename = "DS_STA101A_V1.4.pdf";
+
+                str = '<html><head><title>Command Analysis Result</title></head><body>';
+                str += '<script src="http://code.jquery.com/jquery-1.11.0.min.js"><\/script>';
+                str += '<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.7/pdfobject.min.js"><\/script>';
+
+                str += "<body><div id='container'></div><script>PDFObject.embed('./datasheet/";
+                str += `${filename}`;
+                str += "', '#container');<\/script>";
+                str += "</body></html>";
+
+                var opt = 'toolbar=no, menubar=no, location=no, status=no, width=680, height=800, left=600, top=500';
+                var subWindow = window.open('', 'Data Sheet', opt, true);
+                subWindow.document.write(str);
+            });
+
+            $('#overview').on('click', function(e) {
+                var width = 820;
+                var height = 720;
+                var top = 10;
+                var left = 10;
+
+                var url = 'Overview.html';
+
+                if( FirstDeviceList.includes(deviceName) ) {
+                    url += `?Type=OldSTA`;
+                    width = 1140;
+                    height = 700;
+                } else if( SecondDeviceList.includes(deviceName) ) {
+                    url += `?Type=NewSTA`;
+                    width = 820;
+                    height = 700;
+                }
+                var opt = `toolbar=no, menubar=no, location=no, status=no, target=_blank`;
+                    opt += `, width=${width}, height=${height}, top=${top}, left=${left}`;
+
+                window.open(url, `Overview Window Open`, opt);
+            });
+
+            $('#id-device').on('change', function(e) {
+                var $this = $(this);
+//                console.log(e);
+//                console.log(`frame click event : ${e.type}, ${e.target.value}, ${this.checked}\n`);
+                deviceName = event.target.value;
+                var color = $this.find('option:selected').css('background-color');
+                $this.css({'background-color':color});
+
+                console.log(`device Name : ${deviceName}`);
+                $('.Command').css('display', 'none');
+                if( FirstDeviceList.includes(deviceName) ) {
+                    $('#oldCommand').css('display', 'inline-block');
+                    $('#DataNum').val('0x5A');
+                } else if( SecondDeviceList.includes(deviceName) ) {
+                    $('#newCommand').css('display', 'inline-block');
+                    $('#DataNum').val('0xA5');
+                } else {
+                    console.log('unknown device.');
+                }
+
+                createWindow(deviceName);
+                document.getElementById('svgContainer2').innerHTML = ""; // 기존에 생성된 Wafer Map을 제거한다.
+                document.getElementById('svgContainer3').innerHTML = ""; // 기존에 생성된 Wafer Map을 제거한다.
+            });
+
+            $('#oldCommand').on('change', function(e) {
+                console.log(`frame click event : ${e.type}, ${e.target.value}, ${this.checked}\n`);
+                var cmd = e.target.value;
+
+                if( cmd < 0x10 ) {
+                    $('#ChipID').css('display', 'none');
+                    $('#CoreID').css('display', 'none');
+                    $('#WData').css('display', 'none');
+                } else if( (cmd == 0x10) || (cmd == 0x11) || (cmd == 0x12) || (cmd == 0x14) ) {
+                    $('#ChipID').css('display', 'inline-block');
+                    $('#CoreID').css('display', 'none');
+                    $('#WData').css('display', 'inline-block');
+                } else if( cmd == 0x13 ) {          // OR_CRL
+                    $('#ChipID').css('display', 'none');
+                    $('#CoreID').css('display', 'none');
+                    $('#WData').css('display', 'inline-block');
+                } else {
+//                if( (cmd == 0x18) || (cmd == 0x19) || (cmd == 0x1A) || (cmd == 0x1C) || (cmd == 0x1D) ) {
+                    $('#ChipID').css('display', 'inline-block');
+                    $('#CoreID').css('display', 'inline-block');
+                    $('#WData').css('display', 'inline-block');
+                }
+            });
+
+            $('#newCommand').on('change', function(e) {
+                console.log(`frame click event : ${e.type}, ${e.target.value}, ${this.checked}\n`);
+                var cmd = e.target.value;
+
+                if( cmd < 0x10 ) {
+                    $('#ChipID').css('display', 'none');
+                    $('#CoreID').css('display', 'none');
+                    $('#WData').css('display', 'none');
+                } else if( (cmd == 0x13) || (cmd == 0x16) ) {
+                    $('#ChipID').css('display', 'none');
+                    $('#CoreID').css('display', 'none');
+                    $('#WData').css('display', 'inline-block');
+                } else if( (cmd == 0x1A) || (cmd == 0x1B) || (cmd == 0x1C) || (cmd == 0x1D) ) {
+                    $('#ChipID').css('display', 'inline-block');
+                    $('#CoreID').css('display', 'inline-block');
+                    $('#WData').css('display', 'inline-block');
+                } else {
+//                if( (cmd == 0x11) || (cmd == 0x12) || (cmd == 0x14) || (cmd == 0x15) || (cmd == 0x17) || (cmd == 0x18) || (cmd == 0x19) ) {
+                    $('#ChipID').css('display', 'inline-block');
+                    $('#CoreID').css('display', 'none');
+                    $('#WData').css('display', 'inline-block');
+                }
+            });
+
+            $("[name='LogicCommand']").on('change', function(e) {
+                console.log(`name select event : ${e.type}, ${e.target.value}, ${this.checked}\n`);
+                var $this = $(this);
+                var color = $this.find('option:selected').css('background-color');
+                $this.css({'background-color':color});
+            });
+
+            $('#MCC16').on('change', function(e) {
+                var $this = $(this);
+                var color = $this.find('option:selected').css('background-color');
+                console.log(color);
+                $this.css({'background-color':color});
+            });
+
+            $('#send').on('click', function(e) {
+//                console.log(e);
+//                console.log(`frame click event : ${e.type}, ${e.target.value}, ${this.checked}\n`);
+                console.log(`deviceName = ${deviceName}`);
+                var cmd;
+
+                var chip = parseInt($('#ChipNum').val());
+                var core = parseInt($('#CoreNum').val());
+                var data = parseInt($('#DataNum').val());
+                if( first == 0 ) {
+                    drawBank(0);
+                }
+                console.log(`chip = ${chip}, core = ${core}, data = 0x${data.toString(16)}`);
+
+                if( FirstDeviceList.includes(deviceName) ) {
+                    cmd = parseInt($('#oldCommand').val());
+                    console.log(`device = ${deviceName}, cmd = 0x${cmd.toString(16)}`);
+                    run_oldCommand(chip, core, cmd, data);
+                } else if( SecondDeviceList.includes(deviceName) ) {
+                    cmd = parseInt($('#newCommand').val());
+                    console.log(`device = ${deviceName}, cmd = 0x${cmd.toString(16)}`);
+                    run_newCommand(chip, core, cmd, data);
+                }
+                drawCommand(chip, core, cmd, data);
+
+                drawBank(1);
+
+                first = 0;
+            });
+
+            const BitMask = [0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80];
+            function run_newCommand(chip, core, cmd, data) {
+                console.log(BankMap);
+                console.log(`chip = ${chip}, core = ${core}, cmd = ${cmd}, data = ${data}`);
+                BankMap.Banks.forEach(function(Bank, nBank) {
+                    Bank.Chip = chip;
+                    Bank.Core = core;
+                    Bank.Cmd = cmd;
+                    Bank.Data = data;
+                });
+                if( (cmd == 0x2) || (cmd == 0x3) || (cmd == 0x4) || (cmd == 0x5) ) {         // RESET_ALL
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices.forEach(function(Device, nDevice) {
+                            Device.Switchs.forEach(function(Channel, nChannel) {
+                                if( Channel.Valid == false ) return;
+
+                                if( cmd == 0x2 ) {              // RESET_ALL
+                                    // All OFF & Reject Clear.
+                                    Channel.Reject = 1;
+                                    Channel.OnOff = 0;
+                                } else if( cmd == 0x3 ) {       // CLEAR_ALL
+                                    // All OFF.
+                                    Channel.OnOff = 0;
+                                } else if( cmd == 0x4 ) {       // ENABLE_ALL
+                                    // All ON.
+                                    if( Channel.Reject == 1 ) Channel.OnOff = 1;
+                                } else if( cmd == 0x5 ) {       // INITIAL_ALL
+                                    // All ON & Reject clear.
+                                    Channel.Reject = 1;
+                                    Channel.OnOff = 1;
+                                }
+                            });
+                        });
+                    });
+                } else if( (cmd == 0xB) || (cmd == 0xC) || (cmd == 0xD) ) {         // EN1_WCON, EN2_WCON, DIS_WCON
+                    // second write enable to control register.
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices.forEach(function(Device, nDevice) {
+                            if( cmd == 0xB ) {
+                                Device.WriteEnable = 0;
+                            } else if( cmd == 0xB ) {
+                                Device.WriteEnable = 1;
+                            } else if( cmd == 0xC ) {
+                                Device.WriteEnable = (Device.WriteEnable == 1) ? 2 : 0;
+                            }
+                        });
+                    });
+                } else if( (cmd == 0x11) || (cmd == 0x18) || (cmd == 0x19) ) {      // WR_GCON, WR_CLCON, WR_TSDCON
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        var Device = Bank.Devices[chip];
+                        if( Device.WriteEnable == 2 ) {
+                            if( cmd == 0x11 ) {
+                                Device.GCON = data;
+                                console.log(`MCC16[${Device.ID}] : GCON = ${Device.GCON}`);
+                            } else if( cmd == 0x18 ) {
+                                Device.CLCON = data;
+                                console.log(`MCC16[${Device.ID}] : CLCON = ${Device.CLCON}`);
+                            } else if( cmd == 0x19 ) {
+                                Device.TSDCON = data;
+                                console.log(`MCC16[${Device.ID}] : TSDCON = ${Device.TSDCON}`);
+                            }
+                        } else {
+                            Device.WriteEnable = 0;
+                        }
+                    });
+                } else if( cmd == 0x12 ) {      // DIRECT_CHP_COR
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices[chip].Switchs.forEach(function(Channel, nChannel) {
+                            if( Channel.Valid == false ) return;
+
+                            if( data & BitMask[Channel.Number & 0x7] ) {    // core number check
+                                if( Channel.Reject == 1 ) Channel.OnOff = 1;
+                            } else {
+                                Channel.OnOff = 0;
+                            }
+                        });
+                    });
+                } else if( cmd == 0x13 ) {      // DIRECT_BNK_COR
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices.forEach(function(Device, nDevice) {
+                            Device.Switchs.forEach(function(Channel, nChannel) {
+                                if( Channel.Valid == false ) return;
+
+                                if( data & BitMask[Channel.Number & 0x7] ) {    // core number check
+                                    if( Channel.Reject == 1 ) Channel.OnOff = 1;
+                                } else {
+                                    Channel.OnOff = 0;
+                                }
+                            });
+                        });
+                    });
+                } else if( cmd == 0x14 ) {      // REJECT_CHP_COR : 선택된 Chip에 Core단위로 Reject시킨다.
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices[chip].Switchs.forEach(function(Channel, nChannel) {
+                            if( Channel.Valid == false ) return;
+
+                            if( (data & BitMask[Channel.Number & 0x7]) == 0 ) { // core number check.
+                                Channel.Reject = 0;
+                                Channel.OnOff = 0;
+                            }
+                        });
+                    });
+                } else if( cmd == 0x15 ) {      // DIRECT_CHP_CHN
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices[chip].Switchs.forEach(function(Channel, nChannel) {
+                            if( Channel.Valid == false ) return;
+
+                            if( data & BitMask[parseInt(Channel.Number / 8)] ) {          // channel number check
+                                if( Channel.Reject == 1 ) Channel.OnOff = 1;
+                            } else {
+                                Channel.OnOff = 0;
+                            }
+                        });
+                    });
+                } else if( cmd == 0x16 ) {      // DIRECT_BNK_CHN
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices.forEach(function(Device, nDevice) {
+                            Device.Switchs.forEach(function(Channel, nChannel) {
+                                if( Channel.Valid == false ) return;
+
+                                if( data & BitMask[parseInt(Channel.Number / 8)] ) {          // channel number check.
+                                    if( Channel.Reject == 1 ) Channel.OnOff = 1;
+                                } else {
+                                    Channel.OnOff = 0;
+                                }
+                            });
+                        });
+                    });
+                } else if( cmd == 0x17 ) {      // REJECT_CHP_CHN
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices[chip].Switchs.forEach(function(Channel, nChannel) {
+                            if( Channel.Valid == false ) return;
+
+                            if( (data & BitMask[parseInt(Channel.Number / 8)]) == 0 ) {   // channel number check.
+                                Channel.Reject = 0;
+                                Channel.OnOff = 0;
+                            }
+                        });
+                    });
+                } else if( cmd == 0x1A ) {      // DIRECT_COR_SW
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices[chip].Switchs.forEach(function(Channel, nChannel) {
+                            if( Channel.Valid == false ) return;
+
+                            var sw_core = (Channel.Number & 0x7);
+                            if( core == sw_core ) {        // core number check.
+                                if( data & BitMask[sw_core] ) {
+                                    if( Channel.Reject == 1) Channel.OnOff = 1;
+                                } else {
+                                    Channel.OnOff = 0;
+                                }
+                            }
+                        });
+                    });
+                } else if( cmd == 0x1B ) {      // DIRECT_CHN_SW
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices[chip].Switchs.forEach(function(Channel, nChannel) {
+                            if( Channel.Valid == false ) return;
+
+                            var sw_channel = parseInt(Channel.Number / 8);
+                            if( core == sw_channel ) {        // channel number check.
+                                if( data & BitMask[sw_channel] ) {
+                                    if( Channel.Reject == 1) Channel.OnOff = 1;
+                                } else {
+                                    Channel.OnOff = 0;
+                                }
+                            }
+                        });
+                    });
+                } else if( cmd == 0x1C ) {      // REJECT_COR_SW
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices[chip].Switchs.forEach(function(Channel, nChannel) {
+                            if( Channel.Valid == false ) return;
+
+                            var sw_core = (Channel.Number & 0x7);
+                            if( core == sw_core ) {        // core number check.
+                                if( (data & BitMask[sw_core]) == 0 ) {
+                                    Channel.Reject == 0;
+                                    Channel.OnOff = 0;
+                                }
+                            }
+                        });
+                    });
+                } else if( cmd == 0x1D ) {      // REJECT_CHN_SW
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices[chip].Switchs.forEach(function(Channel, nChannel) {
+                            if( Channel.Valid == false ) return;
+
+                            var sw_channel = parseInt(Channel.Number / 8);  // get core number of switch.
+                            if( core == sw_channel ) {        // channel number check.
+                                if( (data & BitMask[sw_channel]) == 0 ) {
+                                    Channel.Reject == 0;
+                                    Channel.OnOff = 0;
+                                }
+                            }
+                        });
+                    });
+                }
+                console.log(BankMap);
+            }
+
+            function run_oldCommand(chip, core, cmd, data) {
+                console.log(BankMap);
+                console.log(`chip = ${chip}, core = ${core}, cmd = ${cmd}, data = 0x${data.toString(16)}`);
+
+                var maxChannel = BankMap.Banks[0].Devices[0].nChannel;
+                BankMap.Banks.forEach(function(Bank, nBank) {
+                    Bank.Chip = chip;
+                    Bank.Core = core;
+                    Bank.Cmd = cmd;
+                    Bank.Data = data;
+                });
+                if( cmd == 0x0 ) {                // NORMAL : return to normal mode from load mode.
+                } else if( cmd == 0x1 ) {         // LOAD_ALL : selects all chips to load(apply) the same commands.
+                } else if( cmd == 0x2 ) {         // VIRTUAL : Programming mode for test.
+                } else if( (cmd == 0x3) || (cmd == 4) || (cmd == 5) ) {         // CLEAR_ALL
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices.forEach(function(Device, nDevice) {
+                            Device.Switchs.forEach(function(Channel, nChannel) {
+                                if( Channel.Valid == false ) return;
+
+                                if( cmd == 3 ) {            // All OFF.
+                                    Channel.OnOff = 0;
+                                } else if( cmd == 4 ) {     // All ON
+                                    if( Channel.Reject == 1 ) Channel.OnOff = 1;
+                                } else if( cmd == 5 ) {     // All ON & Reject clear.
+                                    Channel.Reject = 1;
+                                    Channel.OnOff = 1;
+                                }
+                            });
+                        });
+                    });
+                } else if( cmd == 0x10 ) {      // AND_CRL : 특정 Chip에 대해서 모든 Core에 bitwise AND를 실행한다.
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices[chip].Switchs.forEach(function(Channel, nChannel) {
+                            if( Channel.Valid == false ) return;
+
+                            if( Channel.Reject == 1 ) {             // reject clear.
+                                if( (data & BitMask[Channel.Number & (maxChannel-1)]) == 0 ) {    // data bit clear.
+                                    Channel.OnOff = 0;          // Channel.OnOff = Channel.OnOff & 0;   항상 '0' 이다.
+//                                } else {
+//                                    Channel.OnOff = Channel.OnOff & 0x1;            // bit-wise AND -> 기존값 유지.
+                                }
+                            }
+                        });
+                    });
+                } else if( cmd == 0x11 ) {      // OR_CRL : 특정 Chip에 대해서 모든 Core에 bitwise OR를 실행한다.
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices[chip].Switchs.forEach(function(Channel, nChannel) {
+                            if( Channel.Valid == false ) return;
+
+                            if( Channel.Reject == 1 ) {
+                                if( data & BitMask[Channel.Number & (maxChannel-1)] ) {
+                                    Channel.OnOff = 1;
+//                                } else {
+//                                    Channel.OnOff = Channel.OnOff | 0x0;            // bit-wise OR -> 기존값 유지.
+                                }
+                            }
+                        });
+                    });
+                } else if( cmd == 0x12 ) {      // DIRECT_CRL : 특정 Chip에 대해서 모든 Core에 data 값을 write한다.
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices[chip].Switchs.forEach(function(Channel, nChannel) {
+                            if( Channel.Valid == false ) return;
+
+                            if( Channel.Reject == 1 ) {         // when reject clear.
+                                Channel.OnOff = (data & BitMask[Channel.Number & (maxChannel-1)]) ? 1 : 0;
+                            }
+                        });
+                    });
+                } else if( cmd == 0x13 ) {      // DIRECT_CHL : 모든 Chip에 대해서 모든 Core에 data 값을 write한다.
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices.forEach(function(Device, nDevice) {
+                            Device.Switchs.forEach(function(Channel, nChannel) {
+                                if( Channel.Valid == false ) return;
+
+                                if( Channel.Reject == 1 ) {
+                                    Channel.OnOff = (data & BitMask[Channel.Number & (maxChannel-1)]) ? 1 : 0;
+                                }
+                            });
+                        });
+                    });
+                } else if( cmd == 0x14 ) {      // REJECT_CRL : 특정 Chip에 대해서 data의 Core bit가 '0'이면, core단위로 reject한다.
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices[chip].Switchs.forEach(function(Channel, nChannel) {
+                            if( Channel.Valid == false ) return;
+
+                            if( (data & BitMask[parseInt(Channel.Number / maxChannel)]) == 0 ) {
+                                Channel.Reject = 0;
+                                Channel.OnOff = 0;
+                            }
+                        });
+                    });
+                } else if( cmd == 0x18 ) {      // AND_SWL : 특정 Chip에 특정 Core에 bitwise AND를 실행한다.
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices[chip].Switchs.forEach(function(Channel, nChannel) {
+                            if( Channel.Valid == false ) return;
+
+                            if( core == parseInt(Channel.Number / maxChannel) ) {
+                                if( Channel.Reject == 1 ) {
+                                    if( (data & BitMask[Channel.Number & (maxChannel-1)]) == 0 ) {
+                                        Channel.OnOff = 0;
+//                                    } else {
+//                                        Channel.OnOff = Channel.OnOff & 0x1;        // bit-wise AND : 기존값 유지.
+                                    }
+                                }
+                            }
+                        });
+                    });
+                } else if( cmd == 0x19 ) {      // OR_SWL : 특정 Chip에 특정 Core에 bitwise OR를 실행한다.
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices[chip].Switchs.forEach(function(Channel, nChannel) {
+                            if( Channel.Valid == false ) return;
+
+                            if( core == parseInt(Channel.Number / maxChannel) ) {
+                                if( Channel.Reject == 1 ) {
+                                    if( data & BitMask[Channel.Number & (maxChannel-1)] ) {
+                                        Channel.OnOff = 1;
+//                                    } else {
+//                                        Channel.OnOff = Channel.OnOff | 0x1;        // bit-wise OR : 기존값 유지.
+                                    }
+                                }
+                            }
+                        });
+                    });
+                } else if( cmd == 0x1A ) {      // DIRECT_SWL : 특정 Chip에 특정 Core에 data를 Write한다.
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices[chip].Switchs.forEach(function(Channel, nChannel) {
+                            if( Channel.Valid == false ) return;
+
+                            if( core == parseInt(Channel.Number / maxChannel) ) {
+                                if( Channel.Reject == 1 ) {
+                                    Channel.OnOff = (data & BitMask[Channel.Number & (maxChannel-1)]) ? 1 : 0;
+                                }
+                            }
+                        });
+                    });
+                } else if( cmd == 0x1C ) {      // REJECT_SWL : 특정 Chip에 특정 Core에 Reject을 bitwise AND를 실행한다.
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices[chip].Switchs.forEach(function(Channel, nChannel) {
+                            if( Channel.Valid == false ) return;
+
+                            if( core == parseInt(Channel.Number / maxChannel) ) {
+                                if( (data & BitMask[Channel.Number & (maxChannel-1)]) == 0 ) {
+                                    Channel.Reject = 0;
+                                    Channel.OnOff = 0;
+                                }
+                            }
+                        });
+                    });
+                } else if( cmd == 0x1D ) {      // CANCEL_RJT : 특정 Chip에 특정 Core에 Reject을 Clear한다.
+                    BankMap.Banks.forEach(function(Bank, nBank) {
+                        Bank.Devices[chip].Switchs.forEach(function(Channel, nChannel) {
+                            if( Channel.Valid == false ) return;
+
+                            if( core == parseInt(Channel.Number / maxChannel) ) {
+                                if( data & BitMask[Channel.Number & (maxChannel-1)] ) {
+                                    Channel.Reject = 1;
+//                                    Channel.OnOff = 0;
+                                }
+                            }
+                        });
+                    });
+                }
+
+                console.log(BankMap);
+            }
+
+            function drawCommand(chip, core, cmd, data) {
+                document.getElementById('svgContainer2').innerHTML = ""; // 기존에 생성된 Wafer Map을 제거한다.
+                var svgWidth = 685;
+                var svgHeight = 90;
+                svg2 = document.createElementNS(xmlns, 'svg');
+                $(svg2).attr({
+                    id:'Timing', align:'center', width:'100%', height:'100%',
+                    viewBox:`0 0 ${svgWidth} ${svgHeight}`
+                });
+
+                $(document.createElementNS(xmlns, 'path')).attr({
+                    d:`M 30 5 l 40 0 l 0 60 l 20 0 l -40 20 l -40 -20 l 20 0 l 0 -60`,
+                    stroke:'black', 'stroke-width':1, fill:'violet', onclick:'reload()',
+                    class:'FORWORD', visibility:'visible',
+                }).appendTo(svg2);
+
+                $(document.createElementNS(xmlns, 'path')).attr({
+                    d:`M 50 5 l 40 20 l -20 0 l 0 60 l -40 0 l 0 -60 l -20 0 l 40 -20`,
+                    stroke:'black', 'stroke-width':1, fill:'violet', onclick:'reload()',
+                    class:'BACKWORD', visibility:'hidden',
+                }).appendTo(svg2);
+
+                drawTiming(svg2, chip, core, cmd, data, 110, 5);
+                // command descript text.
+                drawCommandDescript(svg2, chip, core, cmd, data);
+                document.getElementById("svgContainer2").appendChild(svg2);
+            }
+
+
+            function reload() {
+                console.log('reload');
+                $('.FORWORD').attr('visibility', 'hidden');
+                $('.BACKWORD').attr('visibility', 'visible');
+                drawBank(0);
+            }
+
+            function drawTiming(svg, chip, core, addr, data, sx, sy) {
+                console.log(`chip = 0x${chip.toString(16)}, core = ${core}, addr = 0x${addr.toString(16)}, data = 0x${data.toString(16)}`);
+                console.log(`sx = ${sx}, sy = ${sy}`);
+
+                var w = 12;
+                var x = sx + (20/2);
+                var y = sy;
+
+                if( addr < 0x10 ) {         // 1-clock command.
+                    $(document.createElementNS(xmlns, 'text')).attr({
+                        x:x, y:y+(5), class:'centerAlign', 'font-size':8
+                    }).text('SCLK').appendTo(svg);
+                    $(document.createElementNS(xmlns, 'path')).attr({
+                        d:`M ${x+20} ${y} l 5 0 l 0 10 l 20 0 l 0 -10 l 20 0 l 0 10 l 20 0 l 0 -10 l 20 0 l 0 10 l 20 0 l 0 -10 l 20 0 l 0 10 l 10 0`,
+                        stroke:'black', 'stroke-width':1, fill:'transparent',
+                    }).appendTo(svg);
+
+                    y += w;
+                    $(document.createElementNS(xmlns, 'text')).attr({
+                        x:x, y:y+5, class:'centerAlign', 'font-size':8
+                    }).text('CSN').appendTo(svg);
+                    $(document.createElementNS(xmlns, 'path')).attr({
+                        d:`M ${x+20} ${y} l 40 0 l 0 10 l 95 0`,
+                        stroke:'black', 'stroke-width':1, fill:'transparent',
+                    }).appendTo(svg);
+
+                    y += w;
+                    $(document.createElementNS(xmlns, 'text')).attr({
+                        x:x, y:y+5, class:'centerAlign', 'font-size':8
+                    }).text('WRN').appendTo(svg);
+                    $(document.createElementNS(xmlns, 'path')).attr({
+                        d:`M ${x+20} ${y} l 40 0 l 0 10 l 45 0 l 0 -10 l 50 0`,
+                        stroke:'black', 'stroke-width':1, fill:'transparent',
+                    }).appendTo(svg);
+
+                    for(var i=0; i<4; i++) {
+                        y += w;
+                        x = sx + (20/2) + 5;
+                        $(document.createElementNS(xmlns, 'text')).attr({
+                            x:x, y:y+5, class:'centerAlign', 'font-size':8
+                        }).text(`DATA[${3-i}]`).appendTo(svg);
+
+                        for(var j=0; j<3; j++) {
+                            var color = ((j==1) ? 'SkyBlue' : 'Gainsboro');
+
+                            if( j == 1 ) {
+                                var str = (addr >> (3-i)) & 0x1;
+
+                                $(document.createElementNS(xmlns, 'text')).attr({
+                                    x:x+40, y:y+6, class:'centerAlign', 'font-size':7
+                                }).text(str).appendTo(svg);
+                            }
+
+                            $(document.createElementNS(xmlns, 'path')).attr({
+                                d:`M ${x+20} ${y} m 0 5 l 2 -5 l 36 0 l 2 5 l -2 5 l -36 0 l -2 -5`,
+                                stroke:'black', 'stroke-width':1, fill:color, 'fill-opacity':0.5,
+                            }).appendTo(svg);
+                            x += 40
+                        }
+                        $(document.createElementNS(xmlns, 'path')).attr({
+                            d:`M ${x+20} ${y+5} l 10 0`,
+                            stroke:'black', 'stroke-width':1,
+                        }).appendTo(svg);
+                    }
+                } else {                    // 2-clock command.
+                    addr = addr & 0xF;
+                    $(document.createElementNS(xmlns, 'text')).attr({
+                        x:x, y:y+(5), class:'centerAlign', 'font-size':8
+                    }).text('SCLK').appendTo(svg);
+                    $(document.createElementNS(xmlns, 'path')).attr({
+                        d:`M ${x+20} ${y} l 5 0 l 0 10 l 20 0 l 0 -10 l 20 0 l 0 10 l 20 0 l 0 -10 l 20 0 l 0 10 l 20 0 l 0 -10 l 20 0 l 0 10 l 20 0 l 0 -10 l 20 0 l 0 10 l 20 0 l 0 -10 l 20 0 l 0 10 l 20 0 l 0 -10 l 20 0 l 0 10 l 20 0 l 0 -10 l 20 0 l 0 10 l 10 0`,
+                        stroke:'black', 'stroke-width':1, fill:'transparent',
+                    }).appendTo(svg);
+
+                    y += w;
+                    $(document.createElementNS(xmlns, 'text')).attr({
+                        x:x, y:y+5, class:'centerAlign', 'font-size':8
+                    }).text('CSN').appendTo(svg);
+                    $(document.createElementNS(xmlns, 'path')).attr({
+                        d:`M ${x+20} ${y} l 40 0 l 0 10 l 255 0`,
+                        stroke:'black', 'stroke-width':1, fill:'transparent',
+                    }).appendTo(svg);
+
+                    y += w;
+                    $(document.createElementNS(xmlns, 'text')).attr({
+                        x:x, y:y+5, class:'centerAlign', 'font-size':8
+                    }).text('WRN').appendTo(svg);
+                    $(document.createElementNS(xmlns, 'path')).attr({
+                        d:`M ${x+20} ${y} l 40 0 l 0 10 l 85 0 l 0 -10 l 170 0`,
+                        stroke:'black', 'stroke-width':1, fill:'transparent',
+                    }).appendTo(svg);
+
+                    for(var i=0; i<4; i++) {
+                        y += w;
+                        x = sx + (20/2) + 5;
+                        $(document.createElementNS(xmlns, 'text')).attr({
+                            x:x, y:y+5, class:'centerAlign', 'font-size':8
+                        }).text(`DATA[${3-i}]`).appendTo(svg);
+
+                        const datafill = ['Gainsboro', 'Salmon', 'Pink', 'SkyBlue', 'LightGreen', 'LightGreen', 'Gainsboro'];
+                        for(var j=0; j<7; j++) {
+                            var color = datafill[j];
+
+                            if( (i == 0) && (j==2) ) {
+                                color = datafill[j-1];
+                            }
+
+                            var str;
+                            if( j == 1 ) {
+                                str = (chip >> (4-i)) & 0x1;
+//                            str = `Chip ID[${4-i}]`;
+                            } else if( j == 2 ) {
+                                if( i == 0 ) {
+                                    str = chip & 0x1;
+//                                str = `Chip ID[0]`;
+                                } else {
+                                    str = (core >> (3-i)) & 0x1;
+//                                str = `Core ID[${3-i}]`;
+                                }
+                            } else if( j == 3 ) {
+                                str = (addr >> (4-i)) & 0x1;
+//                            str = `Addr[${3-i}]`;
+                            } else if( (j == 4) || (j == 5) ) {
+                                str = (data >> (7-(((j-4)*4)+i))) & 0x1;
+//                            str = `WData[${7-(((j-4)*4)+i)}]`;
+                            }
+
+                            if( (j > 0) && (j<6) ) {
+                                $(document.createElementNS(xmlns, 'text')).attr({
+                                    x:x+40, y:y+6, class:'centerAlign', 'font-size':7
+                                }).text(str).appendTo(svg);
+                            }
+
+                            $(document.createElementNS(xmlns, 'path')).attr({
+                                d:`M ${x+20} ${y} m 0 5 l 2 -5 l 36 0 l 2 5 l -2 5 l -36 0 l -2 -5`,
+                                stroke:'black', 'stroke-width':1, fill:color, 'fill-opacity':0.5,
+                            }).appendTo(svg);
+                            x += 40
+                        }
+                        $(document.createElementNS(xmlns, 'path')).attr({
+                            d:`M ${x+20} ${y+5} l 10 0`,
+                            stroke:'black', 'stroke-width':1,
+                        }).appendTo(svg);
+                    }
+                }
+            }
+
+            const oldCommandDescript = [
+//                '[ DIRECT_CHP_COR ]\n Changes ON-OFF states of all switches in the specified Device.\n Updates all Cores’ ON-OFF states of the target Device.\n Switches whose REJECT flags are ‘1’ remain in OFF state.\n\n Chip-ID specifies the target Device.\n Core-ID is ignored.\nWData represents the update value for ON-OFF states of all Cores in the target Device.\n\n 0: OFF, 1: ON', // 0x12
+                '[ NORMAL ]\n Returns to Normal mode from Load mode(release all chip selection)',   // 0x0
+                '[ LOAD_ALL ]\n Select all chips to load(apply) the same commands',   // 0x1
+                '[ VIRTUAL ]\n Programming mode for test.',   // 0x2
+                '[ CLEAR_ALL ]\n Makes all switches off',   // 0x3
+                '[ ENABLE_ALL ]\n Makes all switches on',   // 0x4
+                '[ INITIAL_ALL ]\n Initializes all switches releasing reject condition and making them on',   // 0x5
+                // 0x6 ~ 0xF
+                '', '', '', '', '', '', '', '', '', '',
+                '[ AND_CRL ]\n\
+                Next siwtch status are produced by bitwise AND operation between\n\
+                current switch status and Data[7:0].\n\
+                Applied to all cores of the selected chip.\n\n\
+                선택된 Chip의 모든 Core에 대해서 Data[7:0]의 각 bit는 Channel[7:0]의 상태를\n\
+                제어한다.\n\
+                Data bit가 "0"이면, switch는 OFF되고, "1"이면 이전 상태를 유지한다.', // 0x10
+                '[ OR_CRL ]\n\
+                Next siwtch status are produced by bitwise OR operation between\n\
+                current switch status and Data[7:0].\n\
+                Applied to all cores of the selected chip.\n\n\
+                선택된 Chip의 모든 Core에 대해서 Data[7:0]의 각 bit는 Core의 각 switch와 "OR"한다.\n\
+                Data bit가 "1"일때 해당 switch들은 ON되고, "0"이면 이전 상태를 유지한다.', // 0x11
+                '[ DIRECT_CRL ]\n\
+                Next switch status are produced by Data[7:0] directly.\n\
+                Applied to all cores of the selected chip.\n\n\
+                선택된 Chip의 모든 Core에 대해서 Data[7:0]의 각 bit는 Core의 각 switch를 On/Off한다.\n\
+                Data bit가 "1"이면 switch는 On되고, "0"이면 switch는 Off된다.', // 0x12
+                '[ DIRECT_CHL ]\n\
+                Next switch status are produced by Data[7:0] directly.\n\
+                Applied to all cores of all chips in the same bank.\n\n\
+                모든 Chip의 모든 Core에 대해서 Data[7:0]의 각 bit는 Core의 각 switch를 On/Off한다.\n\
+                Data bit가 "1"이면 switch는 On되고, "0"이면 switch는 Off된다.', // 0x13
+                '[ REJECT_CRL ]\n\
+                Reject all switches of selected core by bitwise AND operation between\n\
+                current core reject status and Data[7:0].\n\n\
+                선택된 Chip에 대해서 Data[7:0]의 각 bit는 각 Core의 모든 switch를 Reject한다.\n\
+                Data bit가 "0"이면, 해당 Core의 모든 switch를 reject하고, "1"이면 이전 상태를 유지한다.', // 0x14
+                '', // 0x15
+                '', // 0x16
+                '', // 0x17
+                '[ AND_SWL ]\n\
+                Next switch status are produced by bitwise AND operation between\n\
+                current switch status and Data[7:0].\n\
+                Applied to the selected core.\n\n\
+                선택된 Chip의 선택된 Core에 대해서 Data[7:0]의 각 bit는 switch를 On/Off한다.\n\
+                Data bit가 "0"이면 OFF되고, "1"이면 이전상태를 유지한다.', // 0x18
+                '[ OR_SWL ]\n\
+                Next switch status are produced by bitwise OR operation between\n\
+                current switch status and Data[7:0].\n\
+                Applied to the selected core.\n\n\
+                선택된 Chip의 선택된 Core에 대해서 Data[7:0]의 각 bit는 switch를 On/Off한다.\n\
+                Data bit가 "1"이면 ON되고, "0"이면 이전상태를 유지한다.', // 0x19
+                '[ DIRECT_SWL ]\n\
+                Next switch status are produced by Data[7:0] directly.\n\
+                Applied to the selected core.\n\n\
+                선택된 Chip의 선택된 Core에 대해서 Data[7:0]의 각 bit는 switch를 On/Off한다.\n\
+                Data bit가 "1"이면 ON되고, "0"이면 OFF된다.', // 0x1A
+                '', // 0x1B
+                '[ REJECT_SWL ]\n\
+                Reject selected switch by bitwise AND operation between\n\
+                current switch reject status and Data[7:0]\n\n\
+                선택된 Chip의 선택된 Core에 대해서 Data[7:0]의 각 bit는 switch를 reject한다.\n\
+                Data bit가 "0"이면 reject되고, "1"이면 이전 상태를 유지한다.', // 0x1C
+                '[ CANCEL_RJT ]\n\
+                Cancel all switch-reject of selected core\n\n\
+                선택된 Chip의 선택된 Core에 대해서 Data[7:0]의 각 bit는 switch의 reject\n\
+                상태를 clear한다.\n\
+                reject된 switch에 대해서 Data bit가 "1"일때만 clear된다.', // 0x1D
+                ];
+            const newCommandDescript = [
+                '', // 0x0
+                '', // 0x1
+                '[ RESET_ALL ]\n\
+                Turns-off all switches of all chips in the Bank (i.e. OFF state).\n\
+                REJECT flags are cleared.',   // 0x2
+                '[ CLEAR_ALL ]\n\
+                Turns-off all switches of all chips in the Bank (i.e. OFF state).\n\
+                REJECT flags are NOT affected.',   // 0x3
+                '[ ENABLE_ALL ]\n\
+                Turns-on all switches of all chips in the Bank (i.e. ON state).\n\
+                Switches with REJECT flags remain in OFF state.',   // 0x4
+                '[ INITIAL_ALL ]\n\
+                Turns-on all switches of all chips in the Bank (i.e. ON state).\n\
+                REJECT flags are cleared.\n\
+                Switches with REJECT flags are also changed to ON state.',   // 0x5
+                '', // 0x6
+                '', // 0x7
+                '', // 0x8
+                '', // 0x9
+                '', // 0xA
+                '[ EN1_WCON ]\n\
+                First sequence to enable writing to control register.\n\
+                Should be followed by EN2_WCON command to enable writing.\n\
+                Otherwise, both EN1_WCON and EN2_WCON commands are canceled.', // 0xB
+                '[ EN2_WCON ]\n\
+                Enables writing to control registers.\n\
+                Should be preceded by EN1_WCON.\n\
+                If not preceded by EN1_WCON, EN2_WCON is ignored.', // 0xC
+                '[ DIS_WCON ]\n\
+                Disables writing to control register.', // 0xD
+                '', // 0xE
+                '', // 0xF
+                '', // 0x10
+                '[ WR_GCON ]\n\
+                Writes to General Control Register.\n\n\
+                Chip-ID specifies the target Device.\n\
+                Core-ID is ignored.\n\
+                WData is the written value to GCON register.', // 0x11
+                '[ DIRECT_CHP_COR ]\n\
+                Changes ON-OFF states of all switches in the specified Device.\n\
+                Updates all Cores’ ON-OFF states of the target Device.\n\
+                Switches whose REJECT flags are ‘1’ remain in OFF state.\n\n\
+                Chip-ID specifies the target Device, Core-ID is ignored.\n\
+                WData represents the update value for ON-OFF states of all Cores in the target \n\
+                Device.\n\n\
+                0: OFF, 1: ON', // 0x12
+                '[ DIRECT_BNK_COR ]\n\
+                Changes ON-OFF states of all switches of all STA-Ns in the selected Bank.\n\
+                Updates all Cores’ ON-OFF states of all STA-Ns in the selected Bank.\n\
+                Switches whose REJECT flags are ‘1’ remain in OFF state.\n\n\
+                Chip-ID is ignored. Core-ID is ignored.\n\
+                WData represents the update value for ON-OFF states of all Cores in the target \n\
+                Device.\n\
+                0: OFF, 1: ON', // 0x13
+                '[ REJECT_CHP_COR ]\n\
+                Changes the REJECT flags of the specified Device.\n\
+                ON-OFF states are updated according to REJECT flags’ values.\n\n\
+                Chip-ID specifies the target Device. Core-ID is ignored.\n\
+                WData[0] represents the update value for REJECT flags of Core0.\n\
+                . . .\n\
+                WData[7] represents the update value for REJECT flags of Core7.\n\n\
+                0: REJECT, 1: No Change.]', // 0x14
+                '[ DIRECT_CHP_CHN ]\n\
+                Changes ON-OFF states of all switches in the specified Device.\n\
+                Updates all Channels’ ON-OFF states of the target Device.\n\
+                Switches whose REJECT flags are ‘1’ remain in OFF state.\n\n\
+                Chip-ID specifies the target Device. Core-ID is ignored.\n\
+                WData represents the update value for ON-OFF states of all Channels in the \n\
+                target Device.\n\n\
+                0: OFF, 1: ON', // 0x15
+                '[ DIRECT_BNK_CHN ]\n\
+                Changes ON-OFF states of all switches of all Devices in the selected Bank.\n\
+                Updates all Channels’ ON-OFF states of all Devices in the selected Bank.\n\
+                Switches whose REJECT flags are ‘1’ remain in OFF state.\n\n\
+                Chip-ID is ignored. Core-ID is ignored.\n\
+                WData represents the update value for ON-OFF states of all Channels in the \n\
+                target Device.\n\n\
+                0: OFF, 1: ON', // 0x16
+                '[ REJECT_CHP_CHN ]\n\
+                Changes the REJECT flags of the specified Device.\n\
+                ON-OFF states are updated according to REJECT flags’ values.\n\n\
+                Chip-ID specifies the target Device. Core-ID is ignored.\n\
+                WData[0] represents the update value for REJECT flags of Channel 0.\n\
+                . . .\n\
+                WData[7] represents the update value for REJECT flags of Channel 7.\n\n\
+                0: REJECT, 1: No Change.', // 0x17
+                '[ WR_CLCON ]\n\
+                Writes to Current Limiting Control Register.\n\n\
+                Chip-ID specifies the target Device. Core-ID is ignored.\n\
+                WData is the written value to CLCON register.', // 0x18
+                '[ WR_TSDCON ]\n\
+                Writes to Thermal Shutdown Control Register.\n\n\
+                Chip-ID specifies the target Device. Core-ID is ignored.\n\
+                WData is the written value to TSDCON register.', // 0x19
+                '[ DIRECT_COR_SW ]\n\
+                Changes ON-OFF states of the specified Core in the specified Device.\n\
+                Switches whose REJECT flags are ‘1’ remain in OFF state.\n\n\
+                Chip-ID specifies the target Device, Core-ID specifies the target Core.\n\
+                WData represents the update value for ON-OFF states of the target Core in the \n\
+                target Device.\n\n\
+                0: OFF, 1: ON', // 0x1A
+                '[ DIRECT_CHN_SW ]\n\
+                Changes ON-OFF states of the specified Channel in the specified Device.\n\
+                Switches whose REJECT flags are ‘1’ remain in OFF state.\n\n\
+                Chip-ID specifies the target Device, Core-ID specifies the target Channel.\n\
+                WData represents the update value for ON-OFF states of the target Channel \n\
+                in the target Device.\n\n\
+                0: OFF, 1: ON', // 0x1B
+                '[ REJECT_COR_SW ]\n\
+                Changes the REJECT flags of the specified Core of the specified Device.\n\
+                ON-OFF states are updated according to REJECT flags’ values.\n\n\
+                Chip-ID specifies the target Device, Core-ID specifies the target Core.\n\
+                WData represents the update value for REJECT flags of the specified Core.\n\n\
+                0: REJECT, 1: No Change.', // 0x1C
+                '[ REJECT_CHN_SW ]\n\
+                Changes the REJECT flags of the specified Channel of the specified Device.\n\
+                ON-OFF states are updated according to REJECT flags’ values.\n\n\
+                Chip-ID specifies the target Device, Core-ID specifies the target Channel.\n\
+                WData represents the update value for REJECT flags of the specified Channel.\n\n\
+                0: REJECT, 1: No Change.', // 0x1D
+                '', // 0x1E
+                '', // 0x1F
+                '', // 0x12
+                '', // 0x12
+                ];
+            function drawCommandDescript(svg, chip, core, cmd, data) {
+                console.log(`chip = ${chip}, core = ${core}, cmd = 0x${cmd.toString(16)}, data = 0x${data.toString(16)}`);
+                var str;
+
+                console.log(deviceName);
+                if( (deviceName == 'STA-FX') || (deviceName == 'STA-FX2') || (deviceName == 'STA-101A') || (deviceName == 'STA-201') || (deviceName == 'STA-2') || (deviceName == 'STA-3B') ) {
+                    str = oldCommandDescript[cmd];
+                } else if( (deviceName == 'MCC16') || (deviceName == 'STA-XF') || (deviceName == 'STA-3X') || (deviceName == 'STA-X') || (deviceName == 'STA-10') || (deviceName == 'STA-20') || (deviceName == 'STA-30') || (deviceName == 'STA-N') ) {
+                    str = newCommandDescript[cmd];
+                } else {
+//                    str = newCommandDescript[cmd];
+                }
+
+                console.log(str);
+                var result = str.split(/\r?\n/);
+                console.log(result);
+                var x = 450;
+                var y = 10;
+                result.forEach(function(line, idx) {
+                    $(document.createElementNS(xmlns, 'text')).attr({
+                        x:x, y:y, 'font-weight':'bold', 'font-size':6
+                    }).html(line).appendTo(svg);
+                    y += 8;
+                });
+                $(document.createElementNS(xmlns, 'rect')).attr({
+                    x:x-3, y:3, width:235, height:y-8,
+                    fill:'transparent', stroke:'gray', 'stroke-width':'1', 'fill-opacity':0.5,
+                }).appendTo(svg);
+
+//                $(document.createElementNS(xmlns, 'rect')).attr({
+//                    x:400, y:10, width:280, height:70,
+//                    fill:'transparent', stroke:'gray', 'stroke-width':'1', 'fill-opacity':0.5,
+//                }).appendTo(svg);
+//                var foreignObject = document.createElementNS(xmlns, 'foreignObject');
+//                var div = document.createElement('div');
+//                $(div).attr('style', 'width:260; height:80; border:solid 1px #000000; font-size:4px; overflow:auto;').text(str);
+//                $(div).attr('style', 'width:260; height:80; font-size:8px; overflow:auto;').text(str);
+//                $(foreignObject).attr("x", 400).attr("y", 10).attr("width", 280).attr("height", 70).append(div);
+//                svg.appendChild(foreignObject);
+
+                /*
+                $(document.createElementNS(xmlns, 'foreignObject')).attr({
+                    x:450, y:10, width:230, height:70, stroke:'black', fill:'gray',
+                }).append(
+                    $(document.createElement('div')).attr({
+                        width:230, height:80, 'overflow':'auto',
+                    }).css({'text-align':'left', 'font-size':'10px', border:'solid 1px #000000'}).html(str)
+                ).appendTo(svg);
+                */
+            }
+        </script>
+    </body>
+</html>
+
